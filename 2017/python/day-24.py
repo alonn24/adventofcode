@@ -15,7 +15,7 @@ def get_bridges(prev, ports):
                 bridges.append(bridge)
     return bridges
 
-input = open("input/day-24.input", "r").read().strip().split("\n")
+input = open("2017/input/day-24.input", "r").read().strip().split("\n")
 ports = list(map(lambda x: [int(y) for y in x.split('/')], input))
 bridges = get_bridges([[0,0]], ports)
 

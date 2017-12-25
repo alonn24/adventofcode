@@ -21,7 +21,7 @@ object Day24 {
     }
   }
   private val inputRowRegex = """(\d+)/(\d+)""".r
-  lazy val input: String = Source.fromFile(s"input/day-24.input").mkString.trim
+  lazy val input: String = Source.fromFile(s"2017/input/day-24.input").mkString.trim
 
   def sum(bridge: List[(Int, Int)]): Int = bridge.foldLeft(0)((res, port) => res + port._1 + port._2)
 
