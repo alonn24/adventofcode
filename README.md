@@ -15,4 +15,3 @@ etc
 > run
 > chooose a day to run
 ```
-_make sure to be in the directory of the file
