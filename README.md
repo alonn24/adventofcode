@@ -13,5 +13,12 @@ etc
 > sbt
 > compile
 > run
-> chooose a day to run
+> chooose day-XX to run
+```
+
+### cpp
+```
+> cmake CMakeLists.txt
+> make
+> 2017/cpp/run-day-xx
 ```

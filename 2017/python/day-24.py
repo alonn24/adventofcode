@@ -23,7 +23,6 @@ maxVal = 0
 maxBridge = []
 for bridge in bridges:
     sumVal = sum(a+b for a, b in bridge)
-    lengthVal = len(bridge)
     if (len(bridge) > len(maxBridge) or 
             (len(bridge) == len(maxBridge) and sumVal > maxVal)):
         maxVal = sumVal
