@@ -1014,15 +1014,16 @@ const oprs = {
   'dec': (a, v) => a - v,
 };
 
+let max = 0;
 instructions.forEach(entry => {
   const parts = entry.split(' ');
-  console.log(parts);
   if (equalities[parts[5]](map[parts[4]] || 0, parts[6])) {
     const value = map[parts[0]] || 0;
+    max = Math.max(max, value);
     map[parts[0]] = oprs[parts[1]](value, +parts[2]);
   }
 });
 
 const result = Math.max(...Object.keys(map).map(key => map[key]));
-console.log(map);
 console.log(result);
+console.log(max);

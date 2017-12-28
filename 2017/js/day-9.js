@@ -11,7 +11,6 @@ const result = input.split('').reduce((res, c) => {
 
     ignore = c === '!';
     garbage = !(c === '>');
-    // console.log('g', c, !ignore && garbage);
     num = (!ignore && garbage)? num+1 : num;
   } else {
     switch (c) {
