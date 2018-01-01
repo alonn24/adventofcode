@@ -1998,13 +1998,6 @@ let input = '0 <-> 1352, 1864\n' +
   '1997 <-> 362, 1613\n' +
   '1998 <-> 1939, 1998\n' +
   '1999 <-> 90, 1212';
-input2 = '0 <-> 2\n' +
-  '1 <-> 1\n' +
-  '2 <-> 0, 3, 4\n' +
-  '3 <-> 2, 4\n' +
-  '4 <-> 2, 3, 6\n' +
-  '5 <-> 6\n' +
-  '6 <-> 4, 5';
 const villages = input.split('\n');
 const graph = villages.reduce((res, v) => {
   const [num, connected] = v.split(' <-> ');
