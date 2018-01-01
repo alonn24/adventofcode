@@ -2004,12 +2004,6 @@ const graph = villages.reduce((res, v) => {
   const negh = connected.replace(/\s/g, '').split(',');
   res[num] = res[num] || [];
   res[num].push(...negh);
-  negh.forEach(n => {
-    res[n] = res[n] || [];
-    if (res[n].indexOf(num) < 0) {
-      res[n].push(num);
-    }
-  });
   return res;
 }, {});
 
@@ -2017,13 +2011,15 @@ let visited = [];
 let i = 0;
 let count = 0;
 const entryPoints = Object.keys(graph);
+console.log('part1', Object.keys(findGroup(graph, '0')).length)
+
 while (i < entryPoints.length && i >= 0) {
   count++;
   const group = findGroup(graph, entryPoints[i]);
-  visited = visited.concat(group);
+  visited = visited.concat(Object.keys(group));
   i = findNextI(entryPoints, visited);
 }
-console.log(count);
+console.log('part2', count);
 function findNextI(all, visited) {
   let res = -1;
   for (let j = 0; j < all.length; j++) {
@@ -2034,18 +2030,14 @@ function findNextI(all, visited) {
   return res;
 }
 
-function findGroup(graph, start) {
-  function getAll(graph, curr, found) {
-    if (!found[curr]) {
-      found[curr] = true;
-      graph[curr].forEach(c => getAll(graph, c, found));
-    }
-    return found;
+function findGroup(graph, curr, found = {}) {
+  if (!found[curr]) {
+    found[curr] = true;
+    graph[curr].forEach(c => findGroup(graph, c, found));
   }
-
-  const res = getAll(graph, start, {});
-  return Object.keys(res);
+  return found;
 }
+
 
 
 
