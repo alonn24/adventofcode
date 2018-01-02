@@ -1,47 +1,5 @@
-let input = '0: 3\n' +
-  '1: 2\n' +
-  '2: 4\n' +
-  '4: 6\n' +
-  '6: 5\n' +
-  '8: 8\n' +
-  '10: 6\n' +
-  '12: 4\n' +
-  '14: 8\n' +
-  '16: 6\n' +
-  '18: 8\n' +
-  '20: 8\n' +
-  '22: 6\n' +
-  '24: 8\n' +
-  '26: 9\n' +
-  '28: 12\n' +
-  '30: 8\n' +
-  '32: 14\n' +
-  '34: 10\n' +
-  '36: 12\n' +
-  '38: 12\n' +
-  '40: 10\n' +
-  '42: 12\n' +
-  '44: 12\n' +
-  '46: 12\n' +
-  '48: 12\n' +
-  '50: 14\n' +
-  '52: 12\n' +
-  '54: 14\n' +
-  '56: 12\n' +
-  '60: 14\n' +
-  '62: 12\n' +
-  '64: 14\n' +
-  '66: 14\n' +
-  '68: 14\n' +
-  '70: 14\n' +
-  '72: 14\n' +
-  '74: 14\n' +
-  '78: 26\n' +
-  '80: 18\n' +
-  '82: 17\n' +
-  '86: 18\n' +
-  '88: 14\n' +
-  '96: 18';
+const fs = require('fs');
+const input = fs.readFileSync('2017/input/day-13.input').toString();
 
 const map = input.split('\n').reduce((map, e) => {
   const values = e.split(': ');
@@ -84,4 +42,4 @@ while (!pass && delay <= 10000000) {
   delay++;
   pass = !willGetCought(delay);
 }
-console.log('part2 delay');
+console.log('part2', delay);
