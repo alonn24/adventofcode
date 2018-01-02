@@ -42,10 +42,6 @@ let input = '0: 3\n' +
   '86: 18\n' +
   '88: 14\n' +
   '96: 18';
-input = '0: 3\n' +
-  '1: 2\n' +
-  '4: 4\n' +
-  '6: 4';
 
 const map = input.split('\n').reduce((map, e) => {
   const values = e.split(': ');
@@ -54,35 +50,6 @@ const map = input.split('\n').reduce((map, e) => {
 }, {});
 
 const layers = Math.max(...Object.keys(map).map(x => +x));
-let delay = -1;
-let pass = false;
-while (!pass && delay <= 11) {
-  delay++;
-  pass = !willGetCought(delay);
-}
-console.log(delay);
-function willGetCought(delay) {
-  console.log(delay);
-  let step = 0;
-  while (step <= layers) {
-    if (isCoughtOnLayer(map[step], step + delay)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-// let step = 0;
-// const coughts = [];
-// while (step <= layers) {
-//   if (isCoughtOnLayer(map[step], step)) {
-//     coughts.push(step);
-//   }
-//   step++;
-// }
-// const sev = coughts.reduce((res, x) => res + x * map[x], 0);
-// console.log(sev, coughts);
-
 
 function isCoughtOnLayer(layer, step) {
   const depth = layer;
@@ -92,3 +59,29 @@ function isCoughtOnLayer(layer, step) {
   }
   return false;
 }
+
+const coughts = [];
+for(let step=0; step<=layers; step++) {
+  if (isCoughtOnLayer(map[step], step)) {
+    coughts.push(step);
+  }
+}
+const sev = coughts.reduce((res, x) => res + x * map[x], 0);
+console.log('part1', sev);
+
+function willGetCought(delay) {
+  for(let step=0; step<=layers; step++) {
+    if (isCoughtOnLayer(map[step], step + delay)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+let delay = -1;
+let pass = false;
+while (!pass && delay <= 10000000) {
+  delay++;
+  pass = !willGetCought(delay);
+}
+console.log('part2 delay');
