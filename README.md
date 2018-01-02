@@ -1,10 +1,11 @@
 [Advent Of Code](https://adventofcode.com) solutions
 
 ## Testing
-### javascript / python / other script languages
+### javascript / python / go / other script languages
 ```
-> node day-xx.js
-> python day-xx.py
+> node */js/day-xx.js
+> python */python/day-xx.py
+> go run */go/day-xx.go
 etc
 ```
 
@@ -20,5 +21,5 @@ etc
 ```
 > cmake CMakeLists.txt
 > make
-> 2017/cpp/run-day-xx
+> */cpp/run-day-xx
 ```

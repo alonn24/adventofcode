@@ -2,7 +2,6 @@ const fs = require('fs');
 const input = fs.readFileSync('2017/input/day-8.input').toString();
 
 const instructions = input.split('\n');
-let map = {};
 const equalities = {
   '>': (a, b) => a > b,
   '>=': (a, b) => a >= b,
@@ -17,6 +16,7 @@ const oprs = {
   'dec': (a, v) => a - v,
 };
 
+let map = {};
 let max = 0;
 instructions.forEach(entry => {
   const parts = entry.split(' ');

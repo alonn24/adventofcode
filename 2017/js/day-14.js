@@ -1,5 +1,4 @@
 let input = 'uugsqrei';
-// input = 'flqrgnkx';
 
 let rows = [];
 for (let i = 0; i < 128; i++) {
@@ -19,8 +18,8 @@ rows.forEach((row, i) => {
     }
   });
 });
-console.log(map);
-console.log(total);
+console.log('part1', Object.keys(map).length)
+console.log('part2', total);
 
 function color(m, i, j) {
   if (m[i] && m[i][j] === '1' && !map[`${i}-${j}`]) {

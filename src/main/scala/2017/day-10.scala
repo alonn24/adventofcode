@@ -3,7 +3,7 @@ package adventofcode2017
 object Day10 {
   lazy val input: String = "227,169,3,166,246,201,0,47,1,255,2,254,96,3,97,144"
 
-  def sparseHash(nums: List[Int], times: Int, listLength: Int): List[Int] = {
+  private def sparseHash(nums: List[Int], times: Int, listLength: Int): List[Int] = {
     val list = (0 until listLength).toList ++ (0 until listLength).toList
     val (res, _, _) = (0 until times).foldLeft((list, 0, 0)) {
       case ((list, pos, skip), _) => 
@@ -25,7 +25,7 @@ object Day10 {
     res.slice(0, listLength)
   }
 
-  def denseHash(nums: List[Int]): List[Int] = {
+  private def denseHash(nums: List[Int]): List[Int] = {
     val res = (0 until 16).foldLeft(List[Int]()) { (x, i) => 
       val value = nums.slice(i*16, i*16+16).foldLeft(0)(_^_)
       x :+ value
@@ -33,13 +33,16 @@ object Day10 {
     res
   }
 
-  def main(args: Array[String]): Unit = {
-    val nums = input.toCharArray.map(_.toInt).toList ++ List(17, 31, 73, 47, 23)
+  def knotHash(input: String): String = {
+  val nums = input.toCharArray.map(_.toInt).toList ++ List(17, 31, 73, 47, 23)
     val sparseHashVal = sparseHash(nums, 64, 256)
     val denseHashVal = denseHash(sparseHashVal);
-    val knotHash = denseHashVal.foldLeft("") { (res, n) => 
+    denseHashVal.foldLeft("") { (res, n) => 
       res + (s"0${n.toHexString}" takeRight 2)
     }
-    println(knotHash)
+  }
+
+  def main(args: Array[String]): Unit = {
+    println(knotHash(input))
   }
 }
