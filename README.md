@@ -6,7 +6,6 @@
 > node */js/day-xx.js
 > python */python/day-xx.py
 > go run */go/day-xx.go
-etc
 ```
 
 ### scala
