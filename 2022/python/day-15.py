@@ -6,7 +6,7 @@ sensors = list(
     map(lambda x: list(map(lambda r: int(r), re.findall('[-0-9]+', x))), input))
 
 
-def get_row_range_for_sensor(target_y, sensor):
+def get_row_range_for_sensor(target_y, sensor, from_limit=None, to_limit=None):
     x, y, bx, by, *_ = sensor
     dis_x = abs(x - bx)
     dis_y = abs(y - by)
@@ -22,6 +22,8 @@ def get_row_range_for_sensor(target_y, sensor):
     # If the start is bigger than the end, the row is out of range
     if start_x > end_x:
         return None
+    if from_limit is not None and to_limit is not None:
+        return [between(start_x, from_limit, to_limit), between(end_x, from_limit, to_limit)]
     return [start_x, end_x]
 
 
@@ -53,23 +55,31 @@ def between(x, start, end):
     return min(max(x, start), end)
 
 
-def get_free_spots_in_row(target_y, search_area):
-    ranges = map(lambda sensor: list(map(
-        lambda x: between(x, 0, search_area), get_row_range_for_sensor(target_y, sensor) or [])), sensors)
-    ranges = filter(lambda r: len(r) > 0, ranges)
-    for i in range(search_area):
-        for r in ranges:
-            if i >= r[0] and i <= r[1]:
-                return [target_y, i]
+def get_free_spot_in_row(target_y, search_area):
+    row_range_for_sensor = [*filter(lambda x: x is not None, map(
+        lambda sensor: get_row_range_for_sensor(target_y, sensor, 0, search_area), sensors))]
+    # start walking the row from 0 skipping with ranges
+    i = 0
+    while (True):
+        if (i > search_area):
+            return None
+        # find the next range that can jump i forward
+        range = next(
+            (x for x in row_range_for_sensor if x[0] <= i and x[1] >= i), None)
+        if range is None:
+            return [i, target_y]
+        elif i <= range[1]:
+            i = range[1]+1
 
 
 def get_no_beacon_at_part_2(search_area):
+    # We go over all the lines and search for a free spot
     for target_y in range(search_area):
-        print(f'target_y - {target_y}')
-        free_spot = get_free_spots_in_row(target_y, search_area)
-        print(f'free_spot - {free_spot}')
-        if  free_spot is not None:
+        print('target_y', target_y, end='\r')
+        free_spot = get_free_spot_in_row(target_y, search_area)
+        if free_spot is not None:
             return free_spot
 
-
-print('part 2 - ', get_no_beacon_at_part_2(4000000))
+# part 2 -  [2662275, 3160102]
+free_spot = get_no_beacon_at_part_2(4000000)
+print('part 2 - ', free_spot[0]*4000000+free_spot[1]) # 10649103160102
