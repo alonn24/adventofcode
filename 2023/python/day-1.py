@@ -14,8 +14,8 @@ print(f'part 1 - {get_sum_of_digits()}')  # 53334
 
 words = ['zero', 'one', 'two', 'three', 'four',
          'five', 'six', 'seven', 'eight', 'nine']
-words_regex = f'([0-9]|{"|".join(words)})'
-
+# adding lookahead to support words like twone (2,1) and eightwo (8,2)
+words_regex = f'(?=([0-9]|{"|".join(words)}))'
 
 def convert_to_digit(word):
     if word.isdigit():
