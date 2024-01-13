@@ -55,20 +55,21 @@ def between(x, start, end):
     return min(max(x, start), end)
 
 
+# In order to run faster we skip taken ranges iteratively and not going one by one
 def get_free_spot_in_row(target_y, search_area):
     row_range_for_sensor = [*filter(lambda x: x is not None, map(
         lambda sensor: get_row_range_for_sensor(target_y, sensor, 0, search_area), sensors))]
     # start walking the row from 0 skipping with ranges
     i = 0
-    while (True):
-        if (i > search_area):
-            return None
+    while (i <= search_area):
         # find the next range that can jump i forward
         range = next(
             (x for x in row_range_for_sensor if x[0] <= i and x[1] >= i), None)
         if range is None:
+            # We have found a place without it being taken by a sensor, this is for sure our free spot
             return [i, target_y]
         elif i <= range[1]:
+            # Skip this range and keep skipping the next one
             i = range[1]+1
 
 
