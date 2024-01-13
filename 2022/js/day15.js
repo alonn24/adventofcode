@@ -4,7 +4,6 @@ const sensors = input.split("\n").map((x) => x.match(/[-0-9]+/g).map(Number));
 
 function getTargetIndices(targetY) {
   const indicesSet = new Set();
-  // let targetRowMap = [];
   sensors.forEach(([x, y, bx, by]) => {
     const yDisToB = Math.abs(y - by);
     const yDisToT = Math.abs(y - targetY);

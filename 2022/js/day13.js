@@ -14,8 +14,8 @@ const dividerPackages = [[[2]], [[6]]];
 
 const allPackages = lists.flatMap((x) => x).concat(dividerPackages);
 const sorted = allPackages.sort((a, b) => (checkList(a, b) ? -1 : 1));
-const dividerPackagesIndices = dividerPackages.map((package) =>
-  sorted.findIndex((x) => JSON.stringify(x) === JSON.stringify(package))
+const dividerPackagesIndices = dividerPackages.map((dp) =>
+  sorted.findIndex((x) => JSON.stringify(x) === JSON.stringify(dp))
 );
 console.log((dividerPackagesIndices[0] + 1) * (dividerPackagesIndices[1] + 1));
 

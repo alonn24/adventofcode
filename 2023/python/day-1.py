@@ -5,7 +5,7 @@ input = open("2023/input/day-1.input.txt", "r").read().strip().split("\n")
 
 
 def get_sum_of_digits():
-    digits = map(lambda x: re.findall('[0-9]', x), input)
+    digits = map(lambda x: re.findall('\d', x), input)
     numbers = map(lambda x: int(f'{x[0]}{x[-1]}'), digits)
     return reduce(lambda a, b: a + b, numbers)
 
@@ -15,7 +15,7 @@ print(f'part 1 - {get_sum_of_digits()}')  # 53334
 words = ['zero', 'one', 'two', 'three', 'four',
          'five', 'six', 'seven', 'eight', 'nine']
 # adding lookahead to support words like twone (2,1) and eightwo (8,2)
-words_regex = f'(?=([0-9]|{"|".join(words)}))'
+words_regex = f'(?=(\d|{"|".join(words)}))'
 
 def convert_to_digit(word):
     if word.isdigit():

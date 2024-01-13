@@ -31,8 +31,6 @@ const monkeys = input.split("\n\n").map((x) => {
         const check = x % BigInt(test) === BigInt(0);
         return check ? ifTrue : ifFalse;
       }
-      const check =
-        typeof x === "bigint" ? x % BigInt(test) === BigInt(0) : x % test === 0;
       return x % test === 0 ? ifTrue : ifFalse;
     },
   };
@@ -62,11 +60,8 @@ Array.from({ length: 20 }).forEach(() => {
     items.forEach((item) => {
       const worryLevel = Math.floor(monkey.performAction(item) / 3);
       const toThrow = monkey.getMonkeyToThrow(worryLevel);
-      // console.log(`${i} inspects ${item}`);
-      // console.log(`  worry level ${worryLevel} throws to ${toThrow}`);
       monkeysItems[toThrow].push(worryLevel);
     });
-    // console.log(``);
 
     // Update business level
     monkeyBusinessCount[i] += items.length;
@@ -85,7 +80,6 @@ const monkeysItems2 = monkeys.map((x) => x.items.map(BigInt));
 Array.from({ length: 10000 }).forEach((_, r) => {
   monkeys.forEach((monkey, i) => {
     const items = monkeysItems2[i];
-    const a = Date.now();
     items.forEach((item) => {
       const worryLevel = monkey.performAction(item) % bigDivider;
       const toThrow = monkey.getMonkeyToThrow(worryLevel);

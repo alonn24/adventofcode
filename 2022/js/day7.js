@@ -36,7 +36,7 @@ const root = new SystemObject("/", DIR);
 // Fill structure
 let currentItem = root;
 const instructions = input.split("\n");
-for (ins of instructions) {
+for (let ins of instructions) {
   const parts = ins.split(" ");
   if (parts[0] === "$") {
     if (parts[1] === "cd") {

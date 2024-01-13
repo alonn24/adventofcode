@@ -255,5 +255,4 @@ while (dir) {
       null;
   }
 }
-// console.log(path.map(p => mazeValue(p)).filter(x => ['|', '-', '+'].indexOf(x) < 0));
 console.log(path.length);

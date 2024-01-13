@@ -10,14 +10,14 @@ def get_row_range_for_sensor(target_y, sensor, from_limit=None, to_limit=None):
     x, y, bx, by, *_ = sensor
     dis_x = abs(x - bx)
     dis_y = abs(y - by)
-    dis_Y_to_target = abs(y - target_y)
+    dis_y_to_target = abs(y - target_y)
 
     # We first get the current row distance and move it to the target
     # Current row start and end are the distance to the beacon + adding each y distance twice, to the left and to the right
     # The target row distance is decreasing the start and end for each y travel
     # If the target y is out of range, the start and end will exchange sides and wont be counted in the later loop
-    start_x = x - dis_x - dis_y + dis_Y_to_target
-    end_x = x + dis_x + dis_y - dis_Y_to_target
+    start_x = x - dis_x - dis_y + dis_y_to_target
+    end_x = x + dis_x + dis_y - dis_y_to_target
 
     # If the start is bigger than the end, the row is out of range
     if start_x > end_x:
@@ -63,14 +63,14 @@ def get_free_spot_in_row(target_y, search_area):
     i = 0
     while (i <= search_area):
         # find the next range that can jump i forward
-        range = next(
+        current_range = next(
             (x for x in row_range_for_sensor if x[0] <= i and x[1] >= i), None)
-        if range is None:
+        if current_range is None:
             # We have found a place without it being taken by a sensor, this is for sure our free spot
             return [i, target_y]
-        elif i <= range[1]:
+        elif i <= current_range[1]:
             # Skip this range and keep skipping the next one
-            i = range[1]+1
+            i = current_range[1]+1
 
 
 def get_no_beacon_at_part_2(search_area):

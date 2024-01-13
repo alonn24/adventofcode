@@ -132,4 +132,3 @@ do {
 );
 
 console.log(sandCount2);
-// console.log(cave2.toString());
