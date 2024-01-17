@@ -44,7 +44,7 @@ def part1():
         for v in next_valves:
             # the time after move and open v
             time_after_open_v = time_left - connections[current_valve, v] - 1
-            sum = all_valves[v]['rate']*time_after_open_v + \
+            sum = all_valves[v]['rate'] * time_after_open_v + \
                 search(time_after_open_v, v, available_valves - {v})
             values.append(sum)
         return max(values)
@@ -55,4 +55,29 @@ def part1():
     return result
 
 
-print(part1())  # 1701
+print(f'part 1- {part1()}')  # 1701
+
+
+def part2():
+    @functools.cache
+    def search(time_left, current_valve, available_valves, assistant):
+        next_valves = [
+            v for v in available_valves if connections[current_valve, v] < time_left]
+        # here is the magic, is we have an assistant we check if he handled the available valves from the start, no matter what minute we are at
+        values = [search(26, 'AA', available_valves, False)
+                  if assistant else 0]
+        for v in next_valves:
+            # the time after move and open v
+            time_after_open_v = time_left - connections[current_valve, v] - 1
+            sum = all_valves[v]['rate'] * time_after_open_v + \
+                search(time_after_open_v, v, available_valves - {v}, assistant)
+            values.append(sum)
+        return max(values)
+
+    # filter out 0 valves so we wont check them
+    available_valves = [v for v in all_valves if all_valves[v]['rate'] > 0]
+    result = search(26, 'AA', frozenset(available_valves), True)
+    return result
+
+
+print(f'part 2 - {part2()}')  # 2455
