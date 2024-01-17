@@ -3,7 +3,6 @@ import itertools
 import collections as c
 from functools import reduce
 import re
-from functools import wraps
 
 input = open("2022/input/day-16.input.txt", "r")
 
