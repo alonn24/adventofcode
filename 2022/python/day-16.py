@@ -1,7 +1,6 @@
 import functools
 import itertools
-import collections as c
-from functools import reduce
+import collections
 import re
 
 input = open("2022/input/day-16.input.txt", "r")
@@ -15,13 +14,13 @@ def extract_values_from_row(row):
     return result
 
 
-all_valves = reduce(lambda result, row: result | extract_values_from_row(row),
+all_valves = functools.reduce(lambda result, row: result | extract_values_from_row(row),
                     open("2022/input/day-16.input.txt"),
                     {})
 valves_names = all_valves.keys()
 
 # build a connection map with every node to every node with the number of hops to get there
-connections = c.defaultdict(lambda: 1000)
+connections = collections.defaultdict(lambda: 1000)
 # initialize the first hops
 for k, item in all_valves.items():
     for rv in item['related_valves']:
