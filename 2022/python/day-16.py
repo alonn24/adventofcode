@@ -1,3 +1,6 @@
+import functools
+import itertools
+import collections as c
 from functools import reduce
 import re
 from functools import wraps
@@ -16,45 +19,40 @@ def extract_values_from_row(row):
 all_valves = reduce(lambda result, row: result | extract_values_from_row(row),
                     open("2022/input/day-16.input.txt"),
                     {})
+valves_names = all_valves.keys()
 
+# build a connection map with every node to every node with the number of hops to get there
+connections = c.defaultdict(lambda: 1000)
+# initialize the first hops
+for k, item in all_valves.items():
+    for rv in item['related_valves']:
+        connections[k, rv] = 1
 
-def traverse_valves(valve, opened_valves, minutes_left, cache):
-    # search the cache as valve -> [...(opened_valves, minutes_left, result)]
-    cached = next(iter([v for v in cache[valve] if v[0] ==
-                  opened_valves and v[1] == minutes_left]), None)
-    if (cached is not None):
-        return cached[2]
-
-    if (minutes_left <= 0):
-        return 0
-    # count the current valve by opened
-    related_valves = all_valves[valve]['related_valves']
-
-    # decide to opened the valve - we decrease 2 minutes, 1 extra for opening the valve
-    open_valve_sums = [0]
-    if all_valves[valve]['rate'] > 0 and valve not in opened_valves:
-        # If we open the valve, sum the current rate as well
-        # If I opened the valve now, it will count only from the next round
-        current_round_sum = all_valves[valve]['rate'] * max(0, minutes_left-1)
-        open_valve_sums = [*map(lambda x: current_round_sum + traverse_valves(
-            x, opened_valves + [valve], minutes_left - 2, cache), related_valves)]
-
-    # decide not to opened the valve
-    not_open_valve_sums = [*map(lambda x: traverse_valves(
-        x, opened_valves, minutes_left - 1, cache), related_valves)]
-
-    # return the better result
-    result = max(*open_valve_sums, *not_open_valve_sums)
-
-    # save in cache
-    cache[valve].append((opened_valves, minutes_left, result))
-    return result
+# use floyd-warshall algorithm to build the distances
+for k, i, j in itertools.product(valves_names, valves_names, valves_names):
+    connections[i, j] = min(
+        connections[i, j], connections[i, k] + connections[k, j])
 
 
 def part1():
-    cache = dict([(i, []) for i in all_valves.keys()])
-    sum = traverse_valves('AA', [], 30, cache)
-    return sum
+    @functools.cache
+    def search(time_left, current_valve, available_valves):
+        next_valves = [
+            v for v in available_valves if connections[current_valve, v] < time_left]
+        # init to 0 if there are no next steps
+        values = [0]
+        for v in next_valves:
+            # the time after move and open v
+            time_after_open_v = time_left - connections[current_valve, v] - 1
+            sum = all_valves[v]['rate']*time_after_open_v + \
+                search(time_after_open_v, v, available_valves - {v})
+            values.append(sum)
+        return max(values)
+
+    # filter out 0 valves so we wont check them
+    available_valves = [v for v in all_valves if all_valves[v]['rate'] > 0]
+    result = search(30, 'AA', frozenset(available_valves))
+    return result
 
 
-print(part1())
+print(part1())  # 1701
