@@ -51,9 +51,10 @@ def move_horizontally(board, rows_indices_to_move, direction):
     d = 1 if direction == '>' else -1
     can_move_horizontally = [can_move_row_horizontally(board[i], i+d)
                              for i in rows_indices_to_move]
-    if (can_move_horizontally):
-        for i in rows_indices_to_move:
-            board[i] = move_row_horizontally(board[i], d)
+    if not can_move_horizontally:
+        return
+    for i in rows_indices_to_move:
+        board[i] = move_row_horizontally(board[i], d)
 
 
 def move_stone(board, direction):
