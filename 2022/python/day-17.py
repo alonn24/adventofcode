@@ -30,8 +30,13 @@ def is_in_bounds(row, i): return i >= 0 and i < len(row)
 
 
 def add_stone(board, stone):
-    vertical_gap = [[FREE for _ in range(7)] for _ in range(3)]
-    return stone + vertical_gap + board
+    # Add the stone with the gap
+    to_add = stone + [[FREE for _ in range(7)] for _ in range(3)]
+    # Get all rows indices with stones
+    rows_with_stones = [i for i, row in enumerate(
+        board) if not all(v == FREE for v in row)]
+    # Add the stone ad cut off the board to only where the stones are
+    return to_add + (board if len(rows_with_stones) == 0 else board[rows_with_stones[0]:])
 
 
 def move_horizontally(board, rows_indices_to_move, direction):
@@ -54,7 +59,8 @@ def move_horizontally(board, rows_indices_to_move, direction):
         return row
     # get delta
     d = 1 if direction == '>' else -1
-    can_move_horizontally = len([False for i in rows_indices_to_move if not can_move_row_horizontally(board[i], d)]) == 0
+    can_move_horizontally = len(
+        [False for i in rows_indices_to_move if not can_move_row_horizontally(board[i], d)]) == 0
     print(f'move {direction} can move: {can_move_horizontally}')
     if can_move_horizontally:
         for i in rows_indices_to_move:
@@ -85,7 +91,7 @@ def move_stone(board, direction):
 
 def fixed_rows(board):
     def fix_row(row):
-         return [FIXED if v == MOVING else v for v in row]
+        return [FIXED if v == MOVING else v for v in row]
     return [fix_row(row) for row in board]
 
 
