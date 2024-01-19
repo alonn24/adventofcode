@@ -30,8 +30,8 @@ def is_in_bounds(row, i): return i >= 0 and i < len(row)
 
 
 def add_stone(board, stone):
-    # Add the stone with the gap
-    to_add = stone + [[FREE for _ in range(7)] for _ in range(3)]
+    # Add the stone with the gap. duplicate row content
+    to_add = [[*i] for i in stone] + [[FREE for _ in range(7)] for _ in range(3)]
     # Get all rows indices with stones
     rows_with_stones = [i for i, row in enumerate(
         board) if not all(v == FREE for v in row)]
@@ -61,7 +61,6 @@ def move_horizontally(board, rows_indices_to_move, direction):
     d = 1 if direction == '>' else -1
     can_move_horizontally = len(
         [False for i in rows_indices_to_move if not can_move_row_horizontally(board[i], d)]) == 0
-    print(f'move {direction} can move: {can_move_horizontally}')
     if can_move_horizontally:
         for i in rows_indices_to_move:
             board[i] = move_row_horizontally(board[i], d)
@@ -78,8 +77,11 @@ def move_down(board, rows_indices_to_move):
         return False
 
     # run from bottom to top
-    for row in reversed(rows_indices_to_move):
-        board[row], board[row+1] = board[row+1], board[row]
+    for i in reversed(rows_indices_to_move):
+        for j,_ in enumerate(board[i]):
+            if board[i][j] == MOVING:
+                board[i][j] = FREE
+                board[i+1][j] = MOVING
     return True
 
 
@@ -99,20 +101,23 @@ def play():
     stones_n = 0
     movement_i = 0
     board = []
-    while (stones_n < 2):
+    while (stones_n < 10):
+        print(f'stone {stones_n}', end='\r')
         # Add a new stone
-        print(f'add stone {stones_n}')
         board = add_stone(board, stones[stones_n % len(stones)])
-        pretty_print(board)
         # Move store as much as possible
-        while (move_stone(board, input[movement_i])):
-            pretty_print(board)
+        move = True
+        while (move):
+            move = move_stone(board, input[movement_i])
             movement_i = (movement_i + 1) % len(input)
         # When can't move anymore, fix the rows so we wont move them further
         board = fixed_rows(board)
-        print(f'end stone {stones_n}')
-        pretty_print(board)
         stones_n += 1
+    rows_with_stones = [i for i, row in enumerate(
+        board) if not all(v == FREE for v in row)]
+    print('')
+    pretty_print(board)
+    print(rows_with_stones[-1])
 
 
 play()
