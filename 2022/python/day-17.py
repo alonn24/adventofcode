@@ -101,13 +101,16 @@ def play():
     stones_n = 0
     movement_i = 0
     board = []
-    while (stones_n < 10):
+    # 0 - 2021 is 2022 stones
+    while (stones_n < 22):
         print(f'stone {stones_n}', end='\r')
         # Add a new stone
-        board = add_stone(board, stones[stones_n % len(stones)])
+        stone_to_add = stones[stones_n % len(stones)]
+        board = add_stone(board, stone_to_add)
         # Move store as much as possible
         move = True
         while (move):
+            pretty_print(board)
             move = move_stone(board, input[movement_i])
             movement_i = (movement_i + 1) % len(input)
         # When can't move anymore, fix the rows so we wont move them further
@@ -115,9 +118,10 @@ def play():
         stones_n += 1
     rows_with_stones = [i for i, row in enumerate(
         board) if not all(v == FREE for v in row)]
+
     print('')
     pretty_print(board)
-    print(rows_with_stones[-1])
+    print(len(rows_with_stones))
 
 
 play()
