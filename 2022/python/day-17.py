@@ -67,13 +67,14 @@ def move_horizontally(board, rows_indices_to_move, direction):
 
 
 def move_down(board, rows_indices_to_move):
-    last_row = max(rows_indices_to_move)
     # reach to bottom
-    if last_row >= len(board) - 1:
+    if rows_indices_to_move[-1] >= len(board) - 1:
         return False
-    can_push_row = all(board[last_row+1][i] == FREE for i,
-                       v in enumerate(board[last_row]) if v == MOVING)
-    if not can_push_row:
+    blocked = False
+    for i in rows_indices_to_move:
+        for j,_ in enumerate(board[i]):
+            blocked = blocked or board[i][j] == MOVING and board[i+1][j] == FIXED
+    if blocked:
         return False
 
     # run from bottom to top
@@ -102,7 +103,7 @@ def play():
     movement_i = 0
     board = []
     # 0 - 2021 is 2022 stones
-    while (stones_n < 22):
+    while (stones_n < 2022):
         print(f'stone {stones_n}', end='\r')
         # Add a new stone
         stone_to_add = stones[stones_n % len(stones)]
@@ -110,7 +111,6 @@ def play():
         # Move store as much as possible
         move = True
         while (move):
-            pretty_print(board)
             move = move_stone(board, input[movement_i])
             movement_i = (movement_i + 1) % len(input)
         # When can't move anymore, fix the rows so we wont move them further
@@ -120,7 +120,6 @@ def play():
         board) if not all(v == FREE for v in row)]
 
     print('')
-    pretty_print(board)
     print(len(rows_with_stones))
 
 
