@@ -98,7 +98,7 @@ def fixed_rows(board):
     return [fix_row(row) for row in board]
 
 
-def play():
+def part_1():
     stones_n = 0
     movement_i = 0
     board = []
@@ -123,4 +123,4 @@ def play():
     print(len(rows_with_stones))
 
 
-play()
+part_1() # 3239
