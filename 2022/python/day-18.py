@@ -1,12 +1,14 @@
 import itertools
+from collections import namedtuple
 import re
 input = [[*map(int, re.findall('\d+', v))]
          for v in open("2022/input/day-18.input.txt")]
 
 
 # all directions we can check from a cube without diagonals
-check_dir = [(1, 0, 0), (-1, 0, 0), (0, 1, 0),
-             (0, -1, 0), (0, 0, 1), (0, 0, -1)]
+coordinate = namedtuple('coordinate', ['x', 'y', 'z'])
+check_dir = [coordinate(1, 0, 0), coordinate(-1, 0, 0), coordinate(0, 1, 0),
+             coordinate(0, -1, 0), coordinate(0, 0, 1), coordinate(0, 0, -1)]
 
 
 # a set for all cubes to check if a cube exists in O(1)
@@ -36,7 +38,14 @@ grid_start = -1  # we start from -1 to get the 0,0,0 cube
 
 def get_in_bounds_check_dir(point):
     (x, y, z) = point
-    return [(x+dx, y+dy, z+dz) for (dx, dy, dz) in check_dir if (x+dx >= grid_start and y+dy >= grid_start and z+dz >= grid_start and x+dx <= grid_size and y+dy <= grid_size and z+dz <= grid_size)]
+    return [(x+dx, y+dy, z+dz)
+            for (dx, dy, dz) in check_dir
+            if (x+dx >= grid_start and
+                y+dy >= grid_start and
+                z+dz >= grid_start and
+                x+dx <= grid_size and
+                y+dy <= grid_size and
+                z+dz <= grid_size)]
 
 
 def get_accessible_points(point):
@@ -65,6 +74,5 @@ def part_2():
     return blocks
 
 
-# not 2173 - too high
-# not 2069 - too low
+# 2072
 print(f'part 2 - {part_2()}')
