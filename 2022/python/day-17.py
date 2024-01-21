@@ -31,7 +31,8 @@ def is_in_bounds(row, i): return i >= 0 and i < len(row)
 
 def add_stone(board, stone):
     # Add the stone with the gap. duplicate row content
-    to_add = [[*i] for i in stone] + [[FREE for _ in range(7)] for _ in range(3)]
+    to_add = [[*i] for i in stone] + \
+        [[FREE for _ in range(7)] for _ in range(3)]
     # Get all rows indices with stones
     rows_with_stones = [i for i, row in enumerate(
         board) if not all(v == FREE for v in row)]
@@ -72,14 +73,14 @@ def move_down(board, rows_indices_to_move):
         return False
     blocked = False
     for i in rows_indices_to_move:
-        for j,_ in enumerate(board[i]):
+        for j, _ in enumerate(board[i]):
             blocked = blocked or board[i][j] == MOVING and board[i+1][j] == FIXED
     if blocked:
         return False
 
     # run from bottom to top
     for i in reversed(rows_indices_to_move):
-        for j,_ in enumerate(board[i]):
+        for j, _ in enumerate(board[i]):
             if board[i][j] == MOVING:
                 board[i][j] = FREE
                 board[i+1][j] = MOVING
@@ -98,12 +99,12 @@ def fixed_rows(board):
     return [fix_row(row) for row in board]
 
 
-def part_1():
+def play_stones(n):
     stones_n = 0
     movement_i = 0
     board = []
     # 0 - 2021 is 2022 stones
-    while (stones_n < 2022):
+    while (stones_n < n):
         print(f'stone {stones_n}', end='\r')
         # Add a new stone
         stone_to_add = stones[stones_n % len(stones)]
@@ -119,8 +120,9 @@ def part_1():
     rows_with_stones = [i for i, row in enumerate(
         board) if not all(v == FREE for v in row)]
 
-    print('')
-    print(len(rows_with_stones))
+    return len(rows_with_stones)
 
 
-part_1() # 3239
+part1 = play_stones(n=2022)
+print('')
+print('part1', part1)  # 3239
