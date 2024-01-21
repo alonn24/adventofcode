@@ -10,8 +10,6 @@ def break_input(row):
 
 
 games = [break_input(row) for row in open("2023/input/day-2.input.txt", "r")]
-for game in games:
-    print(game)
 
 
 def is_game_possible(game, limits):
@@ -27,3 +25,11 @@ def part_1(limits):
 
 possible_games = part_1(limits={'blue': 14, 'red': 12, 'green': 13})
 print(f'part 1 - {sum(possible_games)}')  # 2348
+
+
+def part_2():
+    return [max(game['blue']) * max(game['red']) * max(game['green']) for game in games]
+
+
+# 76008
+print(f'part 2 - {sum(part_2())}')
