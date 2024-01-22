@@ -41,7 +41,7 @@ def extract_values_from_row(row):
     clay_cost = Resources(ore=int(b))
     obsidian_cost = Resources(ore=int(c), clay=int(d))
     geo_cost = Resources(ore=int(e), obsidian=int(f))
-    return Blueprint(id, ore_cost, clay_cost, obsidian_cost, geo_cost)
+    return Blueprint(int(id), ore_cost, clay_cost, obsidian_cost, geo_cost)
 
 
 input = [*map(extract_values_from_row, open("2022/input/day-19.input.txt"))]
@@ -96,7 +96,9 @@ def get_quality_level(blueprint):
 
     available_resources = Resources()
     robots = Resources(ore=1)
-    return calculate_for_state(available_resources, robots, 24)
+    max_geode = calculate_for_state(available_resources, robots, 24)
+    print(max_geode)
+    return max_geode * blueprint.id
 
 
 def part_1():
