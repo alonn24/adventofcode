@@ -42,9 +42,9 @@ def part1():
         for v in next_valves:
             # the time after move and open v
             time_after_open_v = time_left - connections[current_valve, v] - 1
-            sum = all_valves[v]['rate'] * time_after_open_v + \
+            result = all_valves[v]['rate'] * time_after_open_v + \
                 search(time_after_open_v, v, available_valves - {v})
-            values.append(sum)
+            values.append(result)
         return max(values)
 
     # filter out 0 valves so we wont check them
@@ -67,9 +67,9 @@ def part2():
         for v in next_valves:
             # the time after move and open v
             time_after_open_v = time_left - connections[current_valve, v] - 1
-            sum = all_valves[v]['rate'] * time_after_open_v + \
+            result = all_valves[v]['rate'] * time_after_open_v + \
                 search(time_after_open_v, v, available_valves - {v}, assistant)
-            values.append(sum)
+            values.append(result)
         return max(values)
 
     # filter out 0 valves so we wont check them
