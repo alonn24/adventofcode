@@ -50,18 +50,25 @@ input = [*map(extract_values_from_row, open("2022/input/day-19.input.txt"))]
 def build_robots(available_resources: Resources, robots: Resources, blueprint: Blueprint):
     # with the default one of not building a thing
     states = [(available_resources, robots)]
+    max_ore_cost = max(blueprint.ore_cost.ore, blueprint.clay_cost.ore, blueprint.obsidian_cost.ore, blueprint.geo_cost.ore)
+    max_clay_cost = max(blueprint.ore_cost.clay, blueprint.clay_cost.clay, blueprint.obsidian_cost.clay, blueprint.geo_cost.clay)
+    max_obsidian_cost = max(blueprint.ore_cost.obsidian, blueprint.clay_cost.obsidian, blueprint.obsidian_cost.obsidian, blueprint.geo_cost.obsidian)
 
     # Add all possible robots build
+    # geode - always build
     if available_resources.has(blueprint.geo_cost):
         states.append((available_resources.subtract(
             blueprint.geo_cost), robots.add(Resources(geode=1))))
-    if available_resources.has(blueprint.obsidian_cost):
+    # obsidian
+    if available_resources.has(blueprint.obsidian_cost) and robots.obsidian < max_obsidian_cost:
         states.append((available_resources.subtract(
             blueprint.obsidian_cost), robots.add(Resources(obsidian=1))))
-    if available_resources.has(blueprint.clay_cost):
+    # clay
+    if available_resources.has(blueprint.clay_cost) and robots.clay < max_clay_cost:
         states.append((available_resources.subtract(
             blueprint.clay_cost), robots.add(Resources(clay=1))))
-    if available_resources.has(blueprint.ore_cost):
+    # ore
+    if available_resources.has(blueprint.ore_cost) and robots.ore < max_ore_cost:
         states.append((available_resources.subtract(
             blueprint.ore_cost), robots.add(Resources(ore=1))))
     return states
@@ -82,7 +89,6 @@ def get_quality_level(blueprint):
 
     @cache
     def calculate_for_state(available_resources, robots, minutes):
-        print(available_resources, robots, minutes)
         if minutes == 0:
             return available_resources.geode
         next_states = build_robots(available_resources, robots, blueprint)
@@ -94,7 +100,7 @@ def get_quality_level(blueprint):
 
 
 def part_1():
-    return [get_quality_level(blueprint) for blueprint in [input[0]]]
+    return [get_quality_level(blueprint) for blueprint in input]
 
 
 print(f'part 1 - {sum(part_1())}')
