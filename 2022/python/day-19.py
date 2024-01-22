@@ -1,3 +1,4 @@
+import concurrent.futures
 import re
 from dataclasses import dataclass
 from collections import namedtuple
@@ -50,9 +51,12 @@ input = [*map(extract_values_from_row, open("2022/input/day-19.input.txt"))]
 def build_robots(available_resources: Resources, robots: Resources, blueprint: Blueprint):
     # with the default one of not building a thing
     states = [(available_resources, robots)]
-    max_ore_cost = max(blueprint.ore_cost.ore, blueprint.clay_cost.ore, blueprint.obsidian_cost.ore, blueprint.geo_cost.ore)
-    max_clay_cost = max(blueprint.ore_cost.clay, blueprint.clay_cost.clay, blueprint.obsidian_cost.clay, blueprint.geo_cost.clay)
-    max_obsidian_cost = max(blueprint.ore_cost.obsidian, blueprint.clay_cost.obsidian, blueprint.obsidian_cost.obsidian, blueprint.geo_cost.obsidian)
+    max_ore_cost = max(blueprint.ore_cost.ore, blueprint.clay_cost.ore,
+                       blueprint.obsidian_cost.ore, blueprint.geo_cost.ore)
+    max_clay_cost = max(blueprint.ore_cost.clay, blueprint.clay_cost.clay,
+                        blueprint.obsidian_cost.clay, blueprint.geo_cost.clay)
+    max_obsidian_cost = max(blueprint.ore_cost.obsidian, blueprint.clay_cost.obsidian,
+                            blueprint.obsidian_cost.obsidian, blueprint.geo_cost.obsidian)
 
     # Add all possible robots build
     # geode - always build
@@ -97,12 +101,18 @@ def get_quality_level(blueprint):
     available_resources = Resources()
     robots = Resources(ore=1)
     max_geode = calculate_for_state(available_resources, robots, 24)
-    print(max_geode)
+    print(f'blueprint {blueprint.id} - {max_geode}')
     return max_geode * blueprint.id
 
 
 def part_1():
-    return [get_quality_level(blueprint) for blueprint in input]
+    with concurrent.futures.ProcessPoolExecutor(max_workers=30) as executor:
+        all = [result for _, result in zip(
+            input, executor.map(get_quality_level, input))]
+        print('part 1 - ', sum(all))
+
+    return 0
 
 
-print(f'part 1 - {sum(part_1())}')
+if __name__ == '__main__':
+    part_1()	# 1356
