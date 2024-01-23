@@ -88,7 +88,7 @@ def collect_resources(available_resources: Resources, robots: Resources):
 state = namedtuple('state', ['available_resources', 'robots', 'minutes'])
 
 
-def get_quality_level(blueprint):
+def get_max_geode(blueprint, initial_minutes):
     print(blueprint)
 
     @cache
@@ -100,19 +100,36 @@ def get_quality_level(blueprint):
 
     available_resources = Resources()
     robots = Resources(ore=1)
-    max_geode = calculate_for_state(available_resources, robots, 24)
+    max_geode = calculate_for_state(
+        available_resources, robots, initial_minutes)
     print(f'blueprint {blueprint.id} - {max_geode}')
-    return max_geode * blueprint.id
+    return max_geode
+
+
+def get_quality_level_p1(
+    blueprint): return get_max_geode(blueprint, 24) * blueprint.id
 
 
 def part_1():
     with concurrent.futures.ProcessPoolExecutor(max_workers=30) as executor:
         all = [result for _, result in zip(
-            input, executor.map(get_quality_level, input))]
+            input, executor.map(get_quality_level_p1, input))]
         print('part 1 - ', sum(all))
 
     return 0
 
 
 if __name__ == '__main__':
-    part_1()	# 1356
+    part_1()  # 1356
+
+
+def part_2():
+    # TOO SLOW
+    max_1 = get_max_geode(input[0], 36)
+    max_2 = get_max_geode(input[0], 36)
+    max_3 = get_max_geode(input[0], 36)
+    print(f'part 2 - {max_1*max_2*max_3}')
+
+
+# if __name__ == '__main__':
+#     part_2()
