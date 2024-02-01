@@ -20,15 +20,15 @@ def mix(numbers):
     result = [v for v in numbers]
     for i, current_num_i in enumerate(indices):
         # Get the next index of the number
-        n = result[current_num_i]
-        next_num_i = current_num_i + n
-        if (next_num_i >= len(result)):
-            next_num_i = (next_num_i + 1) % len(result)
-        elif next_num_i <= 0:
-            next_num_i = (next_num_i - 1) % len(result)
-        print(n, result, current_num_i, next_num_i)
-        # rotate numbers - oddly the pop wont change the array so the insert will work
+        n = result[current_num_i] % (len(result) - 1)
 
+        next_num_i = current_num_i + n
+        if next_num_i >= len(result):
+            next_num_i = next_num_i - len(result) + 1
+        elif next_num_i <= 0:
+            next_num_i = next_num_i + len(result) - 1
+
+        # rotate numbers - oddly the pop wont change the array so the insert will work
         result.insert(next_num_i, result.pop(current_num_i))
         update_indices(indices, i, current_num_i, next_num_i)
     return result
@@ -36,11 +36,11 @@ def mix(numbers):
 
 def part_1():
     mixed = mix(input)
-    print(mixed)
     zero_i = mixed.index(0)
     return mixed[(zero_i+1000) % len(mixed)] + \
         mixed[(zero_i+2000) % len(mixed)] + \
         mixed[(zero_i+3000) % len(mixed)]
 
-# 9459 too low
+
+# 11073
 print(f'part 1- {part_1()}')
