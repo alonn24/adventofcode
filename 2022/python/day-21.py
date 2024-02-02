@@ -1,5 +1,4 @@
 from sympy import symbols, solve
-from enum import Enum
 from functools import reduce
 
 
