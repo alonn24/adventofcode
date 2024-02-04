@@ -68,5 +68,32 @@ def part_1():
         proposition_i += 1
     return get_result(elves, print_result=True)
 
+
 # 3684
 print(f'Part 1 - {part_1()}')
+
+
+def part_2():
+    elves = {(x, y): True for x, row in enumerate(
+        input) for y, cell in enumerate(row) if cell == ELVES}
+    proposition_i = 0
+    counter = 0
+    moved = True
+    while moved:
+        moved = False
+        elves_places = [(e, get_free_space(elves, e, directions))
+                        for e in elves]
+        elves_to_move = [e for e, free in elves_places if len(free) < 8]
+        moves = [propose_move(elves, proposition_i, e) for e in elves_to_move]
+        moves_map = {m: moves.count(m) for m in moves}
+        for i, e in enumerate(elves_to_move):
+            if moves_map[moves[i]] == 1:
+                del elves[e]
+                elves[moves[i]] = True
+                moved = True
+        counter+=1
+        proposition_i += 1
+    return counter
+
+# 862
+print(f'Part 2 - {part_2()}')
