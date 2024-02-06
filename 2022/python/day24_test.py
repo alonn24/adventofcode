@@ -39,6 +39,6 @@ def test_has_blizzard_after():
     assert has_blizzard_after(input, 1, 6, 1+2*3) == True  # ^ several wraps
 
 
-@pytest.mark.skip(reason="not implemented yet")
+# @pytest.mark.skip(reason="not implemented yet")
 def test_part_1():
-    assert part_1() == 0
+    assert part_1() == 10
