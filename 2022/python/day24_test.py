@@ -1,5 +1,4 @@
-import pytest
-from day24 import has_blizzard_after, part_1
+from day24 import has_blizzard_after, part_1, part_2
 
 input = [
     '#.######',
@@ -39,6 +38,8 @@ def test_has_blizzard_after():
     assert has_blizzard_after(input, 1, 6, 1+2*3) == True  # ^ several wraps
 
 
-# @pytest.mark.skip(reason="not implemented yet")
 def test_part_1():
     assert part_1() == 305
+
+def test_part_2():
+    assert part_2() == 905

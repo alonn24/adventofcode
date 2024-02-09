@@ -21,15 +21,26 @@ def has_blizzard_after(map, x, y, t):
         or map[x][(y+t-1) % (columns-2)+1] == '<'
 
 
-def part_1():
-    def is_in_bounds(x, y):
-        return 0 <= x < len(input) and 0 <= y < len(input[0]) and input[x][y] != WALL
+def is_in_bounds(map, x, y):
+    return 0 <= x < len(map) and 0 <= y < len(map[0]) and map[x][y] != WALL
 
+
+def get_trip_time(map, entry, exit, start=0):
     positions = set([entry])
-    t = 0
+    t = start
     while exit not in positions:
         positions = set([(x+dx, y+dy) for x, y in positions for dx,
-                        dy in directions if is_in_bounds(x+dx, y+dy)
-                        and not has_blizzard_after(input, x+dx, y+dy, t+1)])
+                        dy in directions if is_in_bounds(map, x+dx, y+dy)
+                        and not has_blizzard_after(map, x+dx, y+dy, t+1)])
         t += 1
     return t
+
+
+def part_1():
+    return get_trip_time(input, entry, exit)
+
+
+def part_2():
+    t1 = get_trip_time(input, entry, exit)
+    t2 = get_trip_time(input, exit, entry, start=t1)
+    return get_trip_time(input, entry, exit, start=t2)
