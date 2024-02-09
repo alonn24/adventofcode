@@ -9,10 +9,16 @@ def get_entry_value(entry):
     return sum([get_digit_value(d, i) for i, d in enumerate(rev)])
 
 
-def convert_to_decimal(snafu):
-    return snafu
+def convert_to_snafu(d):
+    if d == 0:
+        return ''
+    current = '=-012'[(d+2) % 5];
+    return convert_to_snafu((d+2)//5) + current
 
+
+f = lambda s: f(s[:-1])*5 + '=-012'.find(s[-1])-2 if s else 0
+g = lambda d: g((d+2)//5) + '=-012'[(d+2)%5] if d else ''
 
 def part1():
-    snafu = sum([get_entry_value(e) for e in input])
-    return convert_to_decimal(snafu)
+    d = sum([get_entry_value(e) for e in input])
+    return convert_to_snafu(d)
