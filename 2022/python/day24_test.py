@@ -41,4 +41,4 @@ def test_has_blizzard_after():
 
 # @pytest.mark.skip(reason="not implemented yet")
 def test_part_1():
-    assert part_1() == 10
+    assert part_1() == 305
