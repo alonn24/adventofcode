@@ -1,3 +1,5 @@
+from functools import reduce
+
 FREE = '.'
 FIXED = '#'
 MOVING = '@'
@@ -15,7 +17,7 @@ stones = [
 ]
 
 # 1 for > and -1 for <
-input = [v for v in open("2022/input/day-17.input.txt", "r").read()]
+initial_board = [v for v in open("2022/input/day-17.input.txt", "r").read()]
 
 # helper to print a board
 
@@ -96,33 +98,71 @@ def move_stone(board, direction):
 def fixed_rows(board):
     def fix_row(row):
         return [FIXED if v == MOVING else v for v in row]
-    return [fix_row(row) for row in board]
+    return [fix_row(row) for row in board if not all(v == FREE for v in row)]
 
 
-def play_stones(n):
+def part1(n):
     stones_n = 0
     movement_i = 0
     board = []
     # 0 - 2021 is 2022 stones
     while (stones_n < n):
-        print(f'stone {stones_n}', end='\r')
+        print(f'stone {stones_n+1}', end='\r')
         # Add a new stone
         stone_to_add = stones[stones_n % len(stones)]
         board = add_stone(board, stone_to_add)
         # Move store as much as possible
         move = True
         while (move):
-            move = move_stone(board, input[movement_i])
-            movement_i = (movement_i + 1) % len(input)
+            move = move_stone(board, initial_board[movement_i])
+            movement_i = (movement_i + 1) % len(initial_board)
         # When can't move anymore, fix the rows so we wont move them further
         board = fixed_rows(board)
         stones_n += 1
-    rows_with_stones = [i for i, row in enumerate(
-        board) if not all(v == FREE for v in row)]
 
-    return len(rows_with_stones)
+    print('')
+    return len(board)
+# print('part1', part1(n=2022))  # 3239
 
 
-part1 = play_stones(n=2022)
-print('')
-print('part1', part1)  # 3239
+def get_highest_stones(board):
+    result = [len(board) for _ in range(7)]
+    for i, v in enumerate(result):
+        result[i] = min(
+            [v] + [j for j, row in enumerate(board) if row[i] == FIXED])
+    return reduce(lambda a, b: f'{a}-{b}', result, '')
+
+
+def part2():
+    cache = {}
+    stones_n = 0
+    movement_i = 0
+    board = []
+    # 0 - 2021 is 2022 stones
+    while True:
+        store_i = stones_n % len(stones)
+
+        key = store_i, movement_i
+        if key in cache:
+            S, T = cache[key]
+            # Return when the cyclic pattern is found
+            d, m = divmod(1e12-stones_n, stones_n-S)
+            if m == 0:
+                return len(board) + (len(board)-T)*d
+        # save the board height and the step for later use
+        cache[key] = stones_n, len(board)
+        print(f'stone {stones_n+1}', end='\r')
+        # Add a new stone
+        stone_to_add = stones[store_i]
+        board = add_stone(board, stone_to_add)
+        # Move store as much as possible
+        move = True
+        while (move):
+            move = move_stone(board, initial_board[movement_i])
+            movement_i = (movement_i + 1) % len(initial_board)
+        # When can't move anymore, fix the rows so we wont move them further
+        board = fixed_rows(board)
+        stones_n += 1
+
+
+print('part2', part2())  # 1594842406882
