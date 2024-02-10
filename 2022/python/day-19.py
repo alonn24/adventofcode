@@ -85,23 +85,28 @@ def collect_resources(available_resources: Resources, robots: Resources):
                      geode=available_resources.geode + robots.geode)
 
 
-state = namedtuple('state', ['available_resources', 'robots', 'minutes'])
+state = namedtuple('state', ['available_resources', 'robots'])
+
+
+def get_sort_key(entry: state):
+    x = entry.robots.add(entry.available_resources).add(entry.robots)
+    return (x.geode, x.obsidian, x.clay, x.ore)
 
 
 def get_max_geode(blueprint, initial_minutes):
     print(blueprint)
-
-    @cache
-    def calculate_for_state(available_resources, robots, minutes):
-        if minutes == 0:
-            return available_resources.geode
-        next_states = build_robots(available_resources, robots, blueprint)
-        return max([calculate_for_state(collect_resources(a, robots), b, minutes-1) for (a, b) in next_states])
-
     available_resources = Resources()
     robots = Resources(ore=1)
-    max_geode = calculate_for_state(
-        available_resources, robots, initial_minutes)
+    states = [state(available_resources, robots)]
+    for t in range(initial_minutes):
+        new_states = set()
+        for entry in states:
+            builds = build_robots(
+                entry.available_resources, entry.robots, blueprint)
+            new_states.update([state(collect_resources(a, entry.robots), b)
+                               for (a, b) in builds])
+        states = sorted(list(new_states), key=get_sort_key)[-1000:]
+    max_geode = max([s.available_resources.geode for s in states])
     print(f'blueprint {blueprint.id} - {max_geode}')
     return max_geode
 
@@ -125,11 +130,11 @@ if __name__ == '__main__':
 
 def part_2():
     # TOO SLOW
-    max_1 = get_max_geode(input[0], 36)
-    max_2 = get_max_geode(input[0], 36)
-    max_3 = get_max_geode(input[0], 36)
+    max_1 = get_max_geode(input[0], 32)
+    max_2 = get_max_geode(input[1], 32)
+    max_3 = get_max_geode(input[2], 32)
     print(f'part 2 - {max_1*max_2*max_3}')
 
 
-# if __name__ == '__main__':
-#     part_2()
+if __name__ == '__main__':
+    part_2()  # 27720
