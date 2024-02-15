@@ -1,3 +1,4 @@
+import pytest
 from day_4 import part1
 
 def test_part1_test_case():

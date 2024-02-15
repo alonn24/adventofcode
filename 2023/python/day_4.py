@@ -1,5 +1,6 @@
 import re
 import numpy as np
+from functools import reduce
 
 
 def parse_row(row):
@@ -11,10 +12,6 @@ def parse_row(row):
 def part1(input):
     print('')
     cards = [parse_row(row) for row in input]
-    res = 0
-    for [a, b] in cards:
-        intersected = np.intersect1d(a, b)
-        if (intersected.size > 0):
-            res += 2**(intersected.size-1)
-
-    return res
+    intersected = [np.intersect1d(a, b).size for [a, b] in cards]
+    positive_intersections = [x for x in intersected if x > 0]
+    return reduce(lambda res, y: res + 2**(y-1), positive_intersections, 0)
