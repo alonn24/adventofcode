@@ -4,7 +4,6 @@ from functools import reduce
 
 
 def parse_row(row):
-
     [part1, part2] = row.split(':')[1].split('|')
     return [np.array(re.findall(r'(\d+)', x)) for x in [part1, part2]]
 
