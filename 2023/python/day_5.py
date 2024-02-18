@@ -14,27 +14,36 @@ def parse_input(input):
         ns = [*map(int, re.findall(r'(\d+)', r))]
         for i in range(0, len(ns), 3):
             # Add an end range column to the round at [2]
-            round.append(np.array([ns[i], ns[i+1], ns[i+1] + ns[i+2], ns[i+2]]))
+            round.append(
+                np.array([ns[i], ns[i+1], ns[i+1] + ns[i+2], ns[i+2]]))
         rounds.append(np.array(round))
     return seeds, rounds
 
 
+def run_for_seed(seed, rounds):
+    print(f'seed: {seed}')
+    current = seed
+    for r in rounds:
+        # search range [0] - is start range,  [1] - is end range
+        entry = np.where(np.logical_and(
+            r[:, 1] <= current, r[:, 2] >= current))
+        # if we dont find one, the value stays the same
+        if entry[0].size >= 1:
+            # extract the target by the diff found
+            rows = r[entry[0]]
+            current = rows[0, 0] + (current - rows[0, 1])
+    return current
+
+
 def part1(input):
     seeds, rounds = parse_input(input)
-    values_for_seeds = []
-    for s in seeds:
-        print(f'seed: {s}', end='')
-        current = s
-        for r in rounds:
-            # search range [0] - is start range,  [1] - is end range
-            entry = np.where(np.logical_and(
-                r[:, 1] <= current, r[:, 2] >= current))
-            # if we dont find one, the value stays the same
-            if entry[0].size >= 1:
-                # extract the target by the diff found
-                rows = r[entry[0]]
-                current = rows[0, 0] + (current - rows[0, 1])
-            print(f'->{current}', end='')
-        print('')
-        values_for_seeds.append(current)
+    values_for_seeds = [run_for_seed(s, rounds) for s in seeds]
+    return np.min(values_for_seeds)
+
+
+def part2(input):
+    seeds, rounds = parse_input(input)
+    all_seeds = [j for i in range(0, len(seeds), 2)
+                 for j in range(seeds[i], seeds[i] + seeds[i+1])]
+    values_for_seeds = [run_for_seed(s, rounds) for s in all_seeds]
     return np.min(values_for_seeds)
