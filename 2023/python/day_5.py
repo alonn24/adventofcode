@@ -21,7 +21,6 @@ def parse_input(input):
 
 
 def run_for_seed(seed, rounds):
-    print(f'seed: {seed}')
     current = seed
     for r in rounds:
         # search range [0] - is start range,  [1] - is end range
@@ -41,9 +40,24 @@ def part1(input):
     return np.min(values_for_seeds)
 
 
+def run_ranged_round(seeds, round):
+    v_seeds = seeds[:, None]
+    ixs = np.argmax((v_seeds >= round[:, 1]) &
+                    (v_seeds <= round[:, 2]), axis=1)
+    no_range_mask = ~((v_seeds >= round[:, 1]) & (
+        v_seeds <= round[:, 2])).any(axis=1)
+
+    result = np.where(no_range_mask, seeds,
+                      round[ixs, 0] + seeds - round[ixs, 1])
+    return result
+
+
 def part2(input):
     seeds, rounds = parse_input(input)
-    all_seeds = [j for i in range(0, len(seeds), 2)
-                 for j in range(seeds[i], seeds[i] + seeds[i+1])]
-    values_for_seeds = [run_for_seed(s, rounds) for s in all_seeds]
-    return np.min(values_for_seeds)
+    seeds_ranges = [[*range(seeds[x], seeds[x] + seeds[x+1])]
+                    for x in range(0, len(seeds), 2)]
+    all_seeds = np.array([x for row in seeds_ranges for x in row])
+    current = all_seeds
+    for r in rounds:
+        current = run_ranged_round(current, r)
+    return np.min(current)
