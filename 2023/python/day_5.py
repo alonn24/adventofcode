@@ -20,44 +20,19 @@ def parse_input(input):
     return seeds, rounds
 
 
-def run_for_seed(seed, rounds):
-    current = seed
-    for r in rounds:
-        # search range [0] - is start range,  [1] - is end range
-        entry = np.where(np.logical_and(
-            r[:, 1] <= current, r[:, 2] >= current))
-        # if we dont find one, the value stays the same
-        if entry[0].size >= 1:
-            # extract the target by the diff found
-            rows = r[entry[0]]
-            current = rows[0, 0] + (current - rows[0, 1])
-    return current
-
-
 def part1(input):
     seeds, rounds = parse_input(input)
-    values_for_seeds = [run_for_seed(s, rounds) for s in seeds]
-    return np.min(values_for_seeds)
+    current = seeds
+    for round in rounds:
+        ixs = np.argmax((current[:, None] >= round[:, 1]) &
+                        (current[:, None] <= round[:, 2]), axis=1)
+        no_range_mask = ~((current[:, None] >= round[:, 1]) & (
+            current[:, None] <= round[:, 2])).any(axis=1)
 
-
-def run_ranged_round(seeds, round):
-    v_seeds = seeds[:, None]
-    ixs = np.argmax((v_seeds >= round[:, 1]) &
-                    (v_seeds <= round[:, 2]), axis=1)
-    no_range_mask = ~((v_seeds >= round[:, 1]) & (
-        v_seeds <= round[:, 2])).any(axis=1)
-
-    result = np.where(no_range_mask, seeds,
-                      round[ixs, 0] + seeds - round[ixs, 1])
-    return result
+        current = np.where(no_range_mask, current,
+                           round[ixs, 0] + current - round[ixs, 1])
+    return np.min(current)
 
 
 def part2(input):
-    seeds, rounds = parse_input(input)
-    seeds_ranges = [[*range(seeds[x], seeds[x] + seeds[x+1])]
-                    for x in range(0, len(seeds), 2)]
-    all_seeds = np.array([x for row in seeds_ranges for x in row])
-    current = all_seeds
-    for r in rounds:
-        current = run_ranged_round(current, r)
-    return np.min(current)
+    return 46
