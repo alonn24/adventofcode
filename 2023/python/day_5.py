@@ -34,5 +34,39 @@ def part1(input):
     return np.min(current)
 
 
+def map_ranges(start, end, ranges):
+    intersected = ranges[(ranges[:, 1] <= end) &
+                         (ranges[:, 2] >= start)]
+    intersection_map = np.ones((end - start + 1), dtype=bool)
+    # Add intersected points
+    result = []
+    for ied in intersected:
+        gap = ied[1] - ied[0]
+        result.append([max(start, ied[1]) - gap, min(end, ied[2]) - gap])
+        intersection_map[max((ied[1] - start), 0):max((ied[2] - start + 1), 0)] = False
+    # Add not intersected points
+    indices = np.where(np.diff(np.concatenate(
+        ([False], intersection_map, [False]))) != 0)[0]
+
+    not_intersected = indices.reshape(-1, 2)
+    not_intersected[:, :] += start
+    not_intersected[:, 1] -= 1
+    for x in not_intersected:
+        result.append(x.tolist())
+    return result
+
+
 def part2(input):
-    return 46
+    seeds, rounds = parse_input(input)
+    seeds_pairs = seeds.reshape(-1, 2)
+
+    # convert the gap to end range
+    seeds_pairs[:, 1] = seeds_pairs[:, 0] + seeds_pairs[:, 1]
+
+    current = seeds_pairs
+    for r in rounds:
+        new_current = []
+        for seed in current:
+            new_current.extend(map_ranges(seed[0], seed[1], r))
+        current = np.array(new_current)
+    return np.min(current[:, 0])
