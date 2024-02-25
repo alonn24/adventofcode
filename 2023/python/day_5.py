@@ -20,44 +20,53 @@ def parse_input(input):
     return seeds, rounds
 
 
-def run_for_seed(seed, rounds):
-    current = seed
-    for r in rounds:
-        # search range [0] - is start range,  [1] - is end range
-        entry = np.where(np.logical_and(
-            r[:, 1] <= current, r[:, 2] >= current))
-        # if we dont find one, the value stays the same
-        if entry[0].size >= 1:
-            # extract the target by the diff found
-            rows = r[entry[0]]
-            current = rows[0, 0] + (current - rows[0, 1])
-    return current
-
-
 def part1(input):
     seeds, rounds = parse_input(input)
-    values_for_seeds = [run_for_seed(s, rounds) for s in seeds]
-    return np.min(values_for_seeds)
+    current = seeds
+    for round in rounds:
+        ixs = np.argmax((current[:, None] >= round[:, 1]) &
+                        (current[:, None] <= round[:, 2]), axis=1)
+        no_range_mask = ~((current[:, None] >= round[:, 1]) & (
+            current[:, None] <= round[:, 2])).any(axis=1)
+
+        current = np.where(no_range_mask, current,
+                           round[ixs, 0] + current - round[ixs, 1])
+    return np.min(current)
 
 
-def run_ranged_round(seeds, round):
-    v_seeds = seeds[:, None]
-    ixs = np.argmax((v_seeds >= round[:, 1]) &
-                    (v_seeds <= round[:, 2]), axis=1)
-    no_range_mask = ~((v_seeds >= round[:, 1]) & (
-        v_seeds <= round[:, 2])).any(axis=1)
+def map_ranges(start, end, ranges):
+    intersected = ranges[(ranges[:, 1] <= end) &
+                         (ranges[:, 2] >= start)]
+    intersection_map = np.ones((end - start + 1), dtype=bool)
+    # Add intersected points
+    result = []
+    for ied in intersected:
+        gap = ied[1] - ied[0]
+        result.append([max(start, ied[1]) - gap, min(end, ied[2]) - gap])
+        intersection_map[max((ied[1] - start), 0):max((ied[2] - start + 1), 0)] = False
+    # Add not intersected points
+    indices = np.where(np.diff(np.concatenate(
+        ([False], intersection_map, [False]))) != 0)[0]
 
-    result = np.where(no_range_mask, seeds,
-                      round[ixs, 0] + seeds - round[ixs, 1])
+    not_intersected = indices.reshape(-1, 2)
+    not_intersected[:, :] += start
+    not_intersected[:, 1] -= 1
+    for x in not_intersected:
+        result.append(x.tolist())
     return result
 
 
 def part2(input):
     seeds, rounds = parse_input(input)
-    seeds_ranges = [[*range(seeds[x], seeds[x] + seeds[x+1])]
-                    for x in range(0, len(seeds), 2)]
-    all_seeds = np.array([x for row in seeds_ranges for x in row])
-    current = all_seeds
+    seeds_pairs = seeds.reshape(-1, 2)
+
+    # convert the gap to end range
+    seeds_pairs[:, 1] = seeds_pairs[:, 0] + seeds_pairs[:, 1]
+
+    current = seeds_pairs
     for r in rounds:
-        current = run_ranged_round(current, r)
-    return np.min(current)
+        new_current = []
+        for seed in current:
+            new_current.extend(map_ranges(seed[0], seed[1], r))
+        current = np.array(new_current)
+    return np.min(current[:, 0])
