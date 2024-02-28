@@ -54,7 +54,7 @@ def part2(_input):
             is_three_of_a_kind = sorted_counts[0] == 3
             is_two_pairs = sorted_counts[0] == 2 and sorted_counts[1] == 2
             is_one_pair = sorted_counts[0] == 2
-            return 7 if is_five_of_a_kind else \
+            score =  7 if is_five_of_a_kind else \
                 7 if is_four_of_a_kind and j_count == 1 else \
                 6 if is_four_of_a_kind else \
                 5 if is_full_house else \
@@ -67,7 +67,13 @@ def part2(_input):
                 6 if is_one_pair and j_count == 2 else \
                 4 if is_one_pair and j_count == 1 else \
                 2 if is_one_pair else \
+                7 if j_count == 5 else \
+                7 if j_count == 4 else \
+                6 if j_count == 3 else \
+                4 if j_count == 2 else \
+                2 if j_count == 1 else \
                 1
+            return score
 
         hand_types = np.array([get_hand_type(hand) for hand in data[:, 0]])
         sorted_hands = np.array([]).reshape(-1, 2)
