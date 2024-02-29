@@ -1,0 +1,8 @@
+{
+	"useLibraryCodeForTypes": true,
+	"typeCheckingMode": "strict",
+	"reportMissingImports": true,
+	"reportMissingTypeStubs": true,
+	"reportMissingModuleSource": true,
+	"strict": true
+}
