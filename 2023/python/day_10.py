@@ -72,7 +72,6 @@ def part1(case: str) -> int:
 
 
 def part2(case: str) -> int:
-    print('')
     """
     Part 2 - find tiles enclosed by the loop in the pipes
     """
@@ -83,7 +82,11 @@ def part2(case: str) -> int:
     steps = get_steps_matrix(grid, start_point)
 
     # determind to include S or not
-    verticals_items = ['S', '|', 'L', 'J']  # S | - L J F 7 .
+    verticals_items = ['|', 'L', 'J']  # S | - L J F 7 .
+    is_For7 = (steps[*start_point + (1, 0)] and steps[*start_point + (0, 1)]) \
+        or (steps[*start_point + (1, 0)] and steps[*start_point + (0, -1)])
+    if not is_For7:
+        verticals_items += ['S']
 
     # Count the vertical elements that are part of the loop
     verticals = (steps > 0) & (np.isin(grid, verticals_items))

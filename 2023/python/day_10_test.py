@@ -19,8 +19,8 @@ def test_day10_part1_real_case():
 
 case1 = """
 ..F7.
-SFJ|.
-|J.L7
+.FJ|.
+SJ.L7
 |F--J
 LJ...
 """
@@ -86,4 +86,4 @@ def test_day10_part2_test_cases(case: str, expected: int):
 
 
 def test_day10_part2_real_case():
-    assert part2(open("2023/input/day-10.input.txt").read()) == 495
+    assert part2(open("2023/input/day-10.input.txt").read()) == 493
