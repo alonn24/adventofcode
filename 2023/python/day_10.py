@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 from typing import Any
 
@@ -95,3 +96,26 @@ def part2(case: str) -> int:
     odd_matrix = pipes_thought % 2 == 1
     # Ray Casting Algorithm - if the wall numbers are odd, the point is within the loop
     return np.count_nonzero(odd_matrix & (steps == 0))
+
+
+if __name__ == "__main__":
+    with open("2023/input/day-10.input.txt", "r") as f:
+        case = f.read()
+    grid = np.array([list(row)
+                    for row in case.strip().split("\n")], dtype=np.str_)
+    # Create the steps matrix
+    start_point = np.argwhere(grid == START)[0]
+    steps = get_steps_matrix(grid, start_point)
+    matrix = steps > 0
+
+    # Define a custom colormap for taken (True) and free (False) spaces
+    cmap = plt.get_cmap('coolwarm', 2)
+    # Plot the matrix using imshow
+    plt.imshow(matrix, cmap=cmap)
+    plt.title('The Loop')
+    plt.xlabel('Columns')
+    plt.ylabel('Rows')
+    # Add a color bar for reference
+    cbar = plt.colorbar(ticks=[0.25, 0.75])
+    cbar.set_ticklabels(['Free', 'Loop'])
+    plt.show()
