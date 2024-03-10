@@ -2,10 +2,10 @@ import re
 
 
 def break_input(row):
-    game = int(re.findall('Game (\d+):', row)[0])
-    blue = [int(x) for x in re.findall('(\d+) blue', row)]
-    red = [int(x) for x in re.findall('(\d+) red', row)]
-    green = [int(x) for x in re.findall('(\d+) green', row)]
+    game = int(re.findall(r'Game (\d+):', row)[0])
+    blue = [int(x) for x in re.findall(r'(\d+) blue', row)]
+    red = [int(x) for x in re.findall(r'(\d+) red', row)]
+    green = [int(x) for x in re.findall(r'(\d+) green', row)]
     return {'game': game, 'blue': blue, 'red': red, 'green': green}
 
 

@@ -81,6 +81,7 @@ def get_no_beacon_at_part_2(search_area):
         if free_spot is not None:
             return free_spot
 
+
 # part 2 -  [2662275, 3160102]
 free_spot = get_no_beacon_at_part_2(4000000)
-print('part 2 - ', free_spot[0]*4000000+free_spot[1]) # 10649103160102
+print('part 2 - ', free_spot[0]*4000000+free_spot[1])  # 10649103160102

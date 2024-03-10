@@ -16,6 +16,7 @@ def test_part_2_test_case():
 # 251598109 too high
 # 251181217 too low
 
+
 def test_part_2_real_case():
     assert part2(
         open('2023/input/day-7.input.txt').read().splitlines()) == 251224870

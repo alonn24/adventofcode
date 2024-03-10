@@ -1,7 +1,7 @@
 import itertools
 from collections import namedtuple
 import re
-input = [[*map(int, re.findall('\d+', v))]
+input = [[*map(int, re.findall(r'\d+', v))]
          for v in open("2022/input/day-18.input.txt")]
 
 

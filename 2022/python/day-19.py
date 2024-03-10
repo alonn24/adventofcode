@@ -2,7 +2,6 @@ import concurrent.futures
 import re
 from dataclasses import dataclass
 from collections import namedtuple
-from functools import cache
 input = open("2022/input/day-19.input.txt")
 
 
@@ -17,13 +16,22 @@ class Resources():
         return hash((self.ore, self.clay, self.obsidian, self.geode))
 
     def has(self, other):
-        return self.ore >= other.ore and self.clay >= other.clay and self.obsidian >= other.obsidian and self.geode >= other.geode
+        return self.ore >= other.ore and \
+            self.clay >= other.clay and \
+            self.obsidian >= other.obsidian and \
+            self.geode >= other.geode
 
     def subtract(self, other):
-        return Resources(ore=self.ore - other.ore, clay=self.clay - other.clay, obsidian=self.obsidian - other.obsidian, geode=self.geode - other.geode)
+        return Resources(ore=self.ore - other.ore,
+                         clay=self.clay - other.clay,
+                         obsidian=self.obsidian - other.obsidian,
+                         geode=self.geode - other.geode)
 
     def add(self, other):
-        return Resources(ore=self.ore + other.ore, clay=self.clay + other.clay, obsidian=self.obsidian + other.obsidian, geode=self.geode + other.geode)
+        return Resources(ore=self.ore + other.ore,
+                         clay=self.clay + other.clay,
+                         obsidian=self.obsidian + other.obsidian,
+                         geode=self.geode + other.geode)
 
 
 @dataclass
@@ -35,9 +43,15 @@ class Blueprint():
     geo_cost: Resources
 
 
+pattern = (
+    r'Blueprint (\d+): Each ore robot costs (\d+) ore. '
+    r'Each clay robot costs (\d+) ore. Each obsidian robot costs '
+    r'(\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian.'
+)
+
+
 def extract_values_from_row(row):
-    [(id, a, b, c, d, e, f)] = re.findall(
-        'Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian.', row)
+    [(id, a, b, c, d, e, f)] = re.findall(pattern, row)
     ore_cost = Resources(ore=int(a))
     clay_cost = Resources(ore=int(b))
     obsidian_cost = Resources(ore=int(c), clay=int(d))
