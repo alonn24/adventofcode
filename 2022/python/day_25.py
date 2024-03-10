@@ -12,12 +12,13 @@ def get_entry_value(entry):
 def convert_to_snafu(d):
     if d == 0:
         return ''
-    current = '=-012'[(d+2) % 5];
+    current = '=-012'[(d+2) % 5]
     return convert_to_snafu((d+2)//5) + current
 
 
-f = lambda s: f(s[:-1])*5 + '=-012'.find(s[-1])-2 if s else 0
-g = lambda d: g((d+2)//5) + '=-012'[(d+2)%5] if d else ''
+def f(s): return f(s[:-1])*5 + '=-012'.find(s[-1])-2 if s else 0
+def g(d): return g((d+2)//5) + '=-012'[(d+2) % 5] if d else ''
+
 
 def part1():
     d = sum([get_entry_value(e) for e in input])

@@ -17,6 +17,7 @@ def part1(input):
         result *= beat_record_ways(times[i], distances[i])
     return result
 
+
 def part2(input):
     time = int(''.join(re.findall(r'\d+', input[0])))
     distance = int(''.join(re.findall(r'\d+', input[1])))

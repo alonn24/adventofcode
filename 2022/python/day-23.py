@@ -1,6 +1,9 @@
 input = open('2022/input/day-23.input.txt').read().splitlines()
 
-noop = lambda *args, **kwargs: None
+
+def noop():
+    pass
+
 
 ELVES = '#'
 EMPTY = '.'
@@ -24,7 +27,7 @@ propositions = [
 
 def get_free_space(elves, pos, directions):
     (x, y) = pos
-    return [(x+dx, y+dy) for dx, dy in directions if (x+dx, y+dy) not in elves or elves[(x+dx, y+dy)] == False]
+    return [(x+dx, y+dy) for dx, dy in directions if (x+dx, y+dy) not in elves or not elves[(x+dx, y+dy)]]
 
 
 def propose_move(elves, propose_i, position):
@@ -91,9 +94,10 @@ def part_2():
                 del elves[e]
                 elves[moves[i]] = True
                 moved = True
-        counter+=1
+        counter += 1
         proposition_i += 1
     return counter
+
 
 # 862
 print(f'Part 2 - {part_2()}')

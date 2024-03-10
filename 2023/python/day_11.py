@@ -27,7 +27,7 @@ def part1(case: str) -> int:
     --- Day 11 Part 1: Cosmic Expansion ---
     Find the closest distance between two points in a grid.
     """
-    grid = np.array([list(l.strip()) for l in case.splitlines()])
+    grid = np.array([list(line.strip()) for line in case.splitlines()])
 
     # Get the points indices as tuples
     points = get_points(grid)
@@ -45,7 +45,7 @@ def part2(case: str, expand: int) -> int:
     """
     Part 2 - expand by a factor
     """
-    grid = np.array([list(l.strip()) for l in case.splitlines()])
+    grid = np.array([list(line.strip()) for line in case.splitlines()])
 
     # Get the points indices as tuples
     points = get_points(grid, expand)
