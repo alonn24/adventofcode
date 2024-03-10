@@ -28,7 +28,6 @@ def part1(case: str) -> int:
     Day 13: Point of Incidence
     Part 1 - find mirror index
     """
-    print('')
     patterns = [parse_pattern(part) for part in case.split('\n\n')]
     verticals = 0
     horizontals = 0
@@ -50,7 +49,6 @@ def part2(case: str) -> int:
     """
     Part 2 - find mirror index with a smug
     """
-    print('')
     patterns = [parse_pattern(part) for part in case.split('\n\n')]
     verticals = 0
     horizontals = 0
