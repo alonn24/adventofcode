@@ -15,7 +15,7 @@ def count_mismatch(pattern: np.ndarray[str, Any], idx: int) -> int:
 
 
 def get_vertical_mirror_idx(pattern: np.ndarray[str, Any]) -> int:
-    equal_cols_idx = np.where(np.all(pattern[:, :-1] == pattern[:, 1:], axis=0))[0]
+    equal_cols_idx = np.nonzero(np.all(pattern[:, :-1] == pattern[:, 1:], axis=0))[0]
     equal_cols_idx += 1
     for col in equal_cols_idx:
         if not count_mismatch(pattern, col):
