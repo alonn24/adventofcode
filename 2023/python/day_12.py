@@ -1,14 +1,5 @@
 import numpy as np
-from itertools import product
-from scipy.ndimage import label
-from typing import Any
-
-
-def get_row_count(row: np.ndarray[str, Any]) -> np.ndarray[int, Any]:
-    binary_arr = (row == '#').astype(int)
-    labeled_arr, _ = label(binary_arr)
-    counts = np.bincount(labeled_arr[labeled_arr > 0])
-    return np.pad(counts[1:], (len(row) - len(counts[1:]), 0))
+from functools import lru_cache
 
 
 PLACEHOLDER = '?'
@@ -16,29 +7,52 @@ SPRING = '#'
 FREE = '.'
 
 
-def get_patter_combinations(pattern: np.ndarray[str, Any], groups: np.ndarray[int, Any]) -> int:
-    placeholders = np.count_nonzero(pattern == PLACEHOLDER)
-
-    combinations = np.array([*product([SPRING, FREE], repeat=placeholders)])
-
-    matrices = np.tile(pattern, (len(combinations), 1))
-    matrices[:, pattern == '?'] = combinations
-    matrices_groups = np.apply_along_axis(get_row_count, 1, matrices)
-    padded_groups = np.pad(groups, (len(pattern) - len(groups), 0))
-    return np.sum(np.all(matrices_groups == padded_groups, axis=1))
-
-
-def cal_for_row(row: str) -> int:
-    """
-    Calculate the number of valid combinations in a row.
-    """
+def prepare_row(row: str, copies: int = 1):
     [pattern, groups] = row.strip().split(" ")
-    groups = np.array(groups.split(","), dtype=np.int64)
-    pattern = np.array([*pattern])
-    return get_patter_combinations(pattern, groups)
+    pattern = '?'.join([pattern] * copies)
+    groups = [*map(int, groups.split(',')*copies)]
+    return pattern, groups
+
+
+def get_row_combinations(pattern: str, groups: list[int]) -> int:
+    """
+    Recursive with cache return the number of combinations of the pattern
+    """
+
+    @lru_cache(maxsize=None)
+    def recursive_combinations(pi: int, gi: int, acc: int) -> int:
+        result = 0
+        # Got to the end
+        if pi == len(pattern):
+            # If we ended the groups as well
+            is_end_group = (gi == len(groups) and acc == 0) or (
+                gi == len(groups) - 1 and acc == groups[gi])
+            return 1 if is_end_group else 0
+
+        # Skip a group
+        if pattern[pi] == '.' or pattern[pi] == '?':
+            if acc == 0:
+                result += recursive_combinations(pi + 1, gi, 0)
+            elif gi < len(groups) and acc == groups[gi]:
+                result += recursive_combinations(pi + 1, gi+1, 0)
+        # Continue a group
+        if pattern[pi] == '#' or pattern[pi] == '?':
+            result += recursive_combinations(pi + 1, gi, acc+1)
+        return result
+
+    return recursive_combinations(0, 0, 0)
 
 
 def part1(case: str) -> int:
-    rows = np.array(case.splitlines())
-    result = np.vectorize(cal_for_row)(rows)
-    return np.sum(result)
+    """
+    Day 12: Hot Springs
+    Part 1 - calculate the number of combinations of the pattern
+    """
+    return np.sum([get_row_combinations(*prepare_row(row)) for row in case.splitlines()])
+
+
+def part2(case: str) -> int:
+    """
+    Part 2 - calculate the number of combinations when multiply the stripe by 5
+    """
+    return np.sum([get_row_combinations(*prepare_row(row, 5)) for row in case.splitlines()])
