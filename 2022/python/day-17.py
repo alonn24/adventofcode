@@ -120,7 +120,6 @@ def part1(n):
         board = fixed_rows(board)
         stones_n += 1
 
-    print('')
     return len(board)
 # print('part1', part1(n=2022))  # 3239
 

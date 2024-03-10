@@ -22,7 +22,6 @@ def get_distance(p1: tuple[int, int], p2: tuple[int, int]) -> int:
 
 
 def part1(case: str) -> int:
-    print('')
     """
     --- Day 11 Part 1: Cosmic Expansion ---
     Find the closest distance between two points in a grid.
