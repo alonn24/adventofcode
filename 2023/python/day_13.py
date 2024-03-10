@@ -7,14 +7,18 @@ def parse_pattern(pattern: str) -> np.ndarray[str, Any]:
     return np.array([list(row) for row in rows])
 
 
+def compare_with_idx(pattern: np.ndarray[str, Any], idx: int) -> np.ndarray[bool, Any]:
+    gap = min(idx, len(pattern[0])-idx)
+    left = pattern[:, idx-gap:idx]
+    right = pattern[:, idx:idx+gap]
+    return left == right[:, ::-1]
+
+
 def get_vertical_mirror_idx(pattern: np.ndarray[str, Any]) -> int:
     equal_cols_idx = np.where(np.all(pattern[:, :-1] == pattern[:, 1:], axis=0))[0]
     equal_cols_idx += 1
     for col in equal_cols_idx:
-        gap = min(col, len(pattern[0])-col)
-        left = pattern[:, col-gap:col]
-        right = pattern[:, col:col+gap]
-        if (np.all(left == right[:, ::-1])):
+        if np.all(compare_with_idx(pattern, col)):
             return col
     return 0
 
