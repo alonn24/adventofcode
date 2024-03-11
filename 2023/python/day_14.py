@@ -19,9 +19,6 @@ def roll_once(grid: np.ndarray[str, Any], direction: str = 'up'):
             rolled_stones = (result[1:] == ROLLING) & (result[:-1] == FREE)
             result[:-1] = np.where(rolled_stones, ROLLING, result[:-1])
             result[1:] = np.where(rolled_stones, FREE, result[1:])
-
-            # result[:-1][rolled_stones] = ROLLING
-            # result[1:][rolled_stones] = FREE
         case 'down':
             rolled_stones = (result[:-1] == ROLLING) & (result[1:] == FREE)
             result[1:] = np.where(rolled_stones, ROLLING, result[1:])
@@ -46,7 +43,7 @@ def roll_all_the_way(grid: np.ndarray[str, Any], direction: str = 'up'):
 
 
 def calc_load(grid: np.ndarray[str, Any]):
-    rolling = np.transpose(np.where(grid == ROLLING))
+    rolling = np.transpose(np.nonzero(grid == ROLLING))
     rolling[:, 0] = len(grid) - rolling[:, 0]
     return np.sum(rolling[:, 0])
 
@@ -81,7 +78,6 @@ def part2(case: str):
         roll_all_the_way(grid, 'down')
         roll_all_the_way(grid, 'right')
         if grid.tobytes() in visited:
-            print(f'Found a loop at {i}! starting at {visited[grid.tobytes()]}')
             start = visited[grid.tobytes()]
             steps = i - visited[grid.tobytes()]
             break
