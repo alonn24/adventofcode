@@ -9,23 +9,92 @@ STONE = '#'
 FREE = '.'
 
 
-def run_round(grid: np.ndarray[str, Any]):
-    result = grid.copy()
-    rolled_stones = (result[1:] == ROLLING) & (result[:-1] == FREE)
-    result[:-1][rolled_stones] = ROLLING
-    result[1:][rolled_stones] = FREE
-    return result
+def roll_once(grid: np.ndarray[str, Any], direction: str = 'up'):
+    """
+    Roll the stones in the grid in the given direction
+    """
+    result = grid
+    match direction:
+        case 'up':
+            rolled_stones = (result[1:] == ROLLING) & (result[:-1] == FREE)
+            result[:-1] = np.where(rolled_stones, ROLLING, result[:-1])
+            result[1:] = np.where(rolled_stones, FREE, result[1:])
+
+            # result[:-1][rolled_stones] = ROLLING
+            # result[1:][rolled_stones] = FREE
+        case 'down':
+            rolled_stones = (result[:-1] == ROLLING) & (result[1:] == FREE)
+            result[1:] = np.where(rolled_stones, ROLLING, result[1:])
+            result[:-1] = np.where(rolled_stones, FREE, result[:-1])
+        case 'left':
+            rolled_stones = (result[:, 1:] == ROLLING) & (result[:, :-1] == FREE)
+            result[:, :-1] = np.where(rolled_stones, ROLLING, result[:, :-1])
+            result[:, 1:] = np.where(rolled_stones, FREE, result[:, 1:])
+        case 'right':
+            rolled_stones = (result[:, :-1] == ROLLING) & (result[:, 1:] == FREE)
+            result[:, 1:] = np.where(rolled_stones, ROLLING, result[:, 1:])
+            result[:, :-1] = np.where(rolled_stones, FREE, result[:, :-1])
+        case _:
+            raise ValueError(f"Invalid direction: {direction}")
+    return rolled_stones.any()
+
+
+def roll_all_the_way(grid: np.ndarray[str, Any], direction: str = 'up'):
+    changed = roll_once(grid, direction)
+    while changed:
+        changed = roll_once(grid, direction)
+
+
+def calc_load(grid: np.ndarray[str, Any]):
+    rolling = np.transpose(np.where(grid == ROLLING))
+    rolling[:, 0] = len(grid) - rolling[:, 0]
+    return np.sum(rolling[:, 0])
 
 
 def part1(case: str):
+    """
+    Day 14: Parabolic Reflector Dish
+    Roll stones over the grid and calculate the load
+    """
     grid = np.array([list(row) for row in case.split('\n') if row])
-    updated = run_round(grid)
-    while np.any(updated != grid):
-        grid = updated
-        updated = run_round(grid)
-    rolling = np.transpose(np.where(updated == ROLLING))
-    rolling[:, 0] = len(grid) - rolling[:, 0]
-    return np.sum(rolling[:, 0])
+    roll_all_the_way(grid, 'up')
+    return calc_load(grid)
+
+
+PART2_TIMES = 1000000000
+
+
+def part2(case: str):
+    """
+    Part 2 - run 4 times to all directions
+    find the cycle and skip most of the iterations
+    """
+    grid = np.array([list(row) for row in case.split('\n') if row])
+    # Keep track of visited states to find a loop
+    visited = {grid.tobytes(): 0}
+    start = 0
+    steps = 0
+    # Find the cycle
+    for i in range(PART2_TIMES):
+        roll_all_the_way(grid, 'up')
+        roll_all_the_way(grid, 'left')
+        roll_all_the_way(grid, 'down')
+        roll_all_the_way(grid, 'right')
+        if grid.tobytes() in visited:
+            print(f'Found a loop at {i}! starting at {visited[grid.tobytes()]}')
+            start = visited[grid.tobytes()]
+            steps = i - visited[grid.tobytes()]
+            break
+        visited[grid.tobytes()] = i
+    # Calculate the effective position skipping the cycles
+    # And roll the stones
+    effective_position = (PART2_TIMES - start) % steps
+    for i in range(effective_position - 1):
+        roll_all_the_way(grid, 'up')
+        roll_all_the_way(grid, 'left')
+        roll_all_the_way(grid, 'down')
+        roll_all_the_way(grid, 'right')
+    return calc_load(grid)
 
 
 def play():
@@ -49,7 +118,7 @@ def play():
 
     def on_key(event):
         nonlocal matrix
-        matrix = run_round(matrix)
+        matrix = roll_once(matrix, event.key)
 
     # draw_grid()
     fig.canvas.mpl_connect('key_press_event', on_key)
