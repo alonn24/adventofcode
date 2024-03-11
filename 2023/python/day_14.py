@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from matplotlib import animation
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Rectangle, Circle
 from typing import Any
 import numpy as np
 
@@ -97,14 +97,14 @@ def play():
     fig, ax = plt.subplots()
     matrix = np.array([list(row) for row in open('2023/input/day-14.test.txt', 'r').read().splitlines() if row])
 
-    def draw_grid(frame):
+    def draw_grid():
         ax.clear()
         for i in range(len(matrix)):
             for j in range(len(matrix[0])):
                 if matrix[i, j] == "#":
                     ax.add_patch(Rectangle((j - 0.5, i - 0.5), 1, 1, linewidth=1, edgecolor='black', facecolor='gray'))
                 if matrix[i, j] == "O":
-                    ax.add_patch(Rectangle((j - 0.5, i - 0.5), 1, 1, linewidth=1, edgecolor='black', facecolor='red'))
+                    ax.add_patch(Circle((j, i), 0.5, color='red'))
         ax.set_xticks(np.arange(-0.5, len(matrix[0]), 1), minor=True)
         ax.set_yticks(np.arange(-0.5, len(matrix), 1), minor=True)
         ax.grid(which="minor", color="black", linestyle='-', linewidth=1)
@@ -114,12 +114,12 @@ def play():
 
     def on_key(event):
         nonlocal matrix
-        matrix = roll_once(matrix, event.key)
+        roll_once(matrix, event.key)
+        draw_grid()
+        plt.pause(0.1)
 
-    # draw_grid()
+    draw_grid()
     fig.canvas.mpl_connect('key_press_event', on_key)
-    ani = animation.FuncAnimation(fig, draw_grid, frames=100, interval=100, repeat=False)
-    ani.resume()
     plt.show()
 
 
