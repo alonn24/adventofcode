@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from matplotlib import animation
 from matplotlib.patches import Rectangle, Circle
 from typing import Any
 import numpy as np
