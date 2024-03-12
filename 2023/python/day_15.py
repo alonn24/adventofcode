@@ -37,14 +37,14 @@ def part2(case: str):
         if '-' in part:
             # Turn off the lens
             lens = part.split('-')[0]
-            if not lens in index_map:
+            if lens not in index_map:
                 continue
             box = decode_part(lens)
             boxes[box, index_map[lens], 0] = 0
         if '=' in part:
             # Turn on the lens with the round number
             lens, focal = part.split('=')
-            if not lens in index_map:
+            if lens not in index_map:
                 continue
             box = decode_part(lens)
             # Set order only if not exists
