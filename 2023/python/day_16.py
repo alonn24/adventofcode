@@ -62,25 +62,67 @@ def play_beams(grid: np.ndarray[int, Any], beams: np.ndarray[int, Any]) -> np.nd
     return np.unique(new_beams, axis=0)
 
 
+def get_energized_cells(matrix: np.ndarray[int, Any], entrance_beams: np.ndarray[int, Any]):
+    """
+    This function simulate the beams moving in the grid
+    and result with the number of energized cells
+
+    Args:
+    matrix (np.array): the grid of the beams
+    entrance_beams (np.array): the entrance beams to the grid
+        each item has 4 values: x, y, dx, dy
+        [dx, dy] is the direction of the beam
+
+    Returns:
+    int: the number of energized cells
+    """
+    beam_edges = entrance_beams.copy()
+    # We will filter out beams with the same spot and direction
+    visited_beams = {tuple(row) for row in beam_edges}
+    while True:
+        # Play a round
+        beam_edges = play_beams(matrix, beam_edges)
+
+        # Filter out beams that are already in the visited beams
+        exclude_array = np.array(list(visited_beams))
+        is_in_exclude_array = np.all(beam_edges[:, None, :] == exclude_array[None, :, :], axis=2)
+        beam_edges = beam_edges[~np.any(is_in_exclude_array, axis=1)]
+        if (len(beam_edges) == 0):
+            break
+
+        # Add the new beams to the visited beams
+        visited_beams = visited_beams | {tuple(row) for row in beam_edges}
+    positions_visited = np.array(list(visited_beams))[:, :2]
+    return len(np.unique(positions_visited, axis=0))
+
+
 def part1(case: str):
-    print('')
     """
     Day 16: The Floor Will Be Lava
     Get the energized cells moving in a grid or mirrors ('/', '\') and splitters ('|', '-')
     """
 
     matrix = np.array([[*row] for row in case.split('\n')])
-    # each item has 4 values: x, y, dx, dy
-    # [dx, dy] is the direction of the beam
-    beam_edges = np.array([[0, 0, 0, 1]])  # only the edge of the beam
-    beam_positions = beam_edges[:, :2]  # all the beak positions
-    count = 0
-    while count < 1000:
-        print(count)
-        beam_edges = play_beams(matrix, beam_edges)
-        beam_positions = np.unique(np.append(beam_positions, beam_edges[:, :2], axis=0), axis=0)
-        count += 1
-    return len(beam_positions)
+    # Simulate a beam from the top left corner
+    return get_energized_cells(matrix, np.array([[0, 0, 0, 1]]))
+
+
+def part2(case: str):
+    """
+    Search for the entrance that will make the maximum number of energized cells
+    """
+    matrix = np.array([[*row] for row in case.split('\n')])
+    max_energized_cells = 0
+
+    top_row = [(0, i, 1, 0) for i in range(matrix.shape[1])]
+    bottom_row = [(matrix.shape[0] - 1, i, -1, 0) for i in range(matrix.shape[1])]
+    left_column = [(i, 0, 0, 1) for i in range(matrix.shape[0])]
+    right_column = [(i, matrix.shape[1] - 1, 0, -1) for i in range(matrix.shape[0])]
+
+    all_entrances = top_row + bottom_row + left_column + right_column
+    for entrance in all_entrances:
+        max_energized_cells = max(max_energized_cells, get_energized_cells(matrix, np.array([entrance])))
+    return max_energized_cells
 
 
 def play():
@@ -115,7 +157,6 @@ def play():
         nonlocal beam_positions
         beam_edges = play_beams(matrix, beam_edges)
         beam_positions = np.unique(np.append(beam_positions, beam_edges[:, :2], axis=0), axis=0)
-        print(len(beam_positions))
         draw_grid()
         plt.pause(0.1)
 
