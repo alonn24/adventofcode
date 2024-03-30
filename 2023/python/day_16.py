@@ -140,7 +140,8 @@ def play():
                     ax.add_patch(Rectangle((j - 0.5, i - 0.5), 1, 1, linewidth=1, edgecolor='black', facecolor='gray'))
                     plt.text(j, i, matrix[i, j], ha="center", va="center", color="black", fontsize=14)
         for beam in beam_edges:
-            plt.text(beam[1], beam[0], dir_to_sign[(beam[2], beam[3])], ha="center", va="center", color="black", fontsize=14)
+            sign = dir_to_sign[(beam[2], beam[3])]
+            plt.text(beam[1], beam[0], sign, ha="center", va="center", color="black", fontsize=14)
             ax.add_patch(Circle((beam[1], beam[0]), 0.5, color='blue'))
         for beam in beam_positions:
             ax.add_patch(Circle((beam[1], beam[0]), 0.5, color='blue'))

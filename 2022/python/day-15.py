@@ -13,7 +13,8 @@ def get_row_range_for_sensor(target_y, sensor, from_limit=None, to_limit=None):
     dis_y_to_target = abs(y - target_y)
 
     # We first get the current row distance and move it to the target
-    # Current row start and end are the distance to the beacon + adding each y distance twice, to the left and to the right
+    # Current row start and end are the distance to the beacon
+    #   and adding each y distance twice, to the left and to the right
     # The target row distance is decreasing the start and end for each y travel
     # If the target y is out of range, the start and end will exchange sides and wont be counted in the later loop
     start_x = x - dis_x - dis_y + dis_y_to_target
