@@ -1,5 +1,6 @@
 import re
 from typing import Literal
+from math import lcm
 
 FLIP_FLOP = r'%'
 CONJUNCTION = r'&'
@@ -105,3 +106,67 @@ def part1(case: str):
                 q = aggregator
                 aggregator = []
     return high_count * low_count
+
+
+def part2(case: str):
+    """
+    Find out how many button presses are needed for rx to turn
+    """
+    initial, modules = parse_case(case)
+    modules_connected_to = {k: get_connected_to(k, modules) for k in modules}
+
+    # Conjunctions has internal memory of the signals
+    # This is important because we handle signals by order
+    conjunction_state: dict[str, list[Signal]] = {k: [LOW for _ in v]
+                                                  for k, v in modules_connected_to.items()
+                                                  if modules[k][0] == CONJUNCTION}
+    # Modules state
+    state: dict[str, Signal] = {k: LOW for k in modules}
+
+    con_write_to_rx = get_connected_to('rx', modules)[0]
+    # Search for all writes_to_con to read HIGHto it will send LOW to rx
+    writes_to_con = get_connected_to(con_write_to_rx, modules)
+    cycles = [0 for _ in writes_to_con]
+
+    count = 0
+    while True:
+        count += 1
+        # Q with items (from, to, signal)
+        q: list[tuple[str, str, Signal]] = [(BROADCASTER, x, LOW) for x in initial]
+        aggregator: list[tuple[str, str, Signal]] = []
+
+        while q:
+            # Find cycles
+            for i, con in enumerate(writes_to_con):
+                if state[con] == HIGH:
+                    cycles[i] = count
+            if all(x != 0 for x in cycles):
+                return lcm(*cycles)
+            from_module, current, sig = q.pop(0)
+            if current in modules:
+                type, nodes = modules[current]
+
+                # Flip-flop
+                if type == FLIP_FLOP and sig == 'low':
+                    # Flip the signal
+                    state[current] = flip(state[current])
+                    # Propagate the signal
+                    aggregator.extend([(current, x, state[current]) for x in nodes])
+
+                # Conjunction
+                elif type == CONJUNCTION:
+                    # Update memory
+                    connects_to_current = modules_connected_to[current]
+                    idx = connects_to_current.index(from_module)
+                    conjunction_state[current][idx] = sig
+
+                    # If all signals are high, propagate the signal
+                    all_high = all(x == HIGH for x in conjunction_state[current])
+                    current_sig = LOW if all_high else HIGH
+                    state[current] = current_sig
+                    aggregator.extend([(current, x, current_sig) for x in nodes])
+
+            # Aggregate
+            if not q:
+                q = aggregator
+                aggregator = []
