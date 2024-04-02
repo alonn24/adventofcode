@@ -44,21 +44,56 @@ def flip(signal: Signal) -> Signal:
     return HIGH if signal == LOW else LOW
 
 
+Item = tuple[str, str, Signal]
+State = dict[str, Signal]
+ConjunctionState = dict[str, list[Signal]]
+ModulesConnectedTo = dict[str, list[str]]
+
+
+def run_module(modules: Modules, item: Item, state: State, conjunction_state: ConjunctionState, modules_connected_to: ModulesConnectedTo) -> list[Item]:
+    from_module, current, sig = item
+    if not current in modules:
+        return []
+
+    type, nodes = modules[current]
+
+    # Flip-flop
+    if type == FLIP_FLOP and sig == 'low':
+        # Flip the signal
+        state[current] = flip(state[current])
+        # Propagate the signal
+        return [(current, x, state[current]) for x in nodes]
+
+    # Conjunction
+    elif type == CONJUNCTION:
+        # Update memory
+        connects_to_current = modules_connected_to[current]
+        idx = connects_to_current.index(from_module)
+        conjunction_state[current][idx] = sig
+
+        # If all signals are high, propagate the signal
+        all_high = all(x == HIGH for x in conjunction_state[current])
+        current_sig = LOW if all_high else HIGH
+        state[current] = current_sig
+        return [(current, x, current_sig) for x in nodes]
+    return []
+
+
 def part1(case: str):
     """
     Day 20: Pulse Propagation
     Push the button 1000 times, count the number of pulse in each round multiplied together.
     """
     initial, modules = parse_case(case)
-    modules_connected_to = {k: get_connected_to(k, modules) for k in modules}
+    modules_connected_to: ModulesConnectedTo = {k: get_connected_to(k, modules) for k in modules}
 
     # Conjunctions has internal memory of the signals
     # This is important because we handle signals by order
-    conjunction_state: dict[str, list[Signal]] = {k: [LOW for _ in v]
-                                                  for k, v in modules_connected_to.items()
-                                                  if modules[k][0] == CONJUNCTION}
+    conjunction_state: ConjunctionState = {k: [LOW for _ in v]
+                                           for k, v in modules_connected_to.items()
+                                           if modules[k][0] == CONJUNCTION}
     # Modules state
-    state: dict[str, Signal] = {k: LOW for k in modules}
+    state: State = {k: LOW for k in modules}
 
     # Starts with 1 for the broadcaster push
     high_count = 0
@@ -66,40 +101,22 @@ def part1(case: str):
 
     for _ in range(1000):
         # Q with items (from, to, signal)
-        q: list[tuple[str, str, Signal]] = [(BROADCASTER, x, LOW) for x in initial]
-        aggregator: list[tuple[str, str, Signal]] = []
+        q: list[Item] = [(BROADCASTER, x, LOW) for x in initial]
+        aggregator: list[Item] = []
 
         # Click the button
         low_count += 1
 
         while q:
-            from_module, current, sig = q.pop(0)
+            item = q.pop(0)
+            _, _, sig = item
 
             # Handle a signal here so increasing teh count
             low_count += 1 if sig == LOW else 0
             high_count += 1 if sig == HIGH else 0
 
-            if current in modules:
-                type, nodes = modules[current]
-
-                # Flip-flop
-                if type == FLIP_FLOP and sig == 'low':
-                    # Flip the signal
-                    state[current] = flip(state[current])
-                    # Propagate the signal
-                    aggregator.extend([(current, x, state[current]) for x in nodes])
-
-                # Conjunction
-                elif type == CONJUNCTION:
-                    # Update memory
-                    connects_to_current = modules_connected_to[current]
-                    idx = connects_to_current.index(from_module)
-                    conjunction_state[current][idx] = sig
-
-                    # If all signals are high, propagate the signal
-                    all_high = all(x == HIGH for x in conjunction_state[current])
-                    current_sig = LOW if all_high else HIGH
-                    aggregator.extend([(current, x, current_sig) for x in nodes])
+            aggregator.extend(run_module(modules, item,
+                                         state, conjunction_state, modules_connected_to))
 
             # Aggregate
             if not q:
@@ -142,29 +159,10 @@ def part2(case: str):
                     cycles[i] = count
             if all(x != 0 for x in cycles):
                 return lcm(*cycles)
-            from_module, current, sig = q.pop(0)
-            if current in modules:
-                type, nodes = modules[current]
 
-                # Flip-flop
-                if type == FLIP_FLOP and sig == 'low':
-                    # Flip the signal
-                    state[current] = flip(state[current])
-                    # Propagate the signal
-                    aggregator.extend([(current, x, state[current]) for x in nodes])
-
-                # Conjunction
-                elif type == CONJUNCTION:
-                    # Update memory
-                    connects_to_current = modules_connected_to[current]
-                    idx = connects_to_current.index(from_module)
-                    conjunction_state[current][idx] = sig
-
-                    # If all signals are high, propagate the signal
-                    all_high = all(x == HIGH for x in conjunction_state[current])
-                    current_sig = LOW if all_high else HIGH
-                    state[current] = current_sig
-                    aggregator.extend([(current, x, current_sig) for x in nodes])
+            item = q.pop(0)
+            aggregator.extend(run_module(modules, item,
+                                         state, conjunction_state, modules_connected_to))
 
             # Aggregate
             if not q:
