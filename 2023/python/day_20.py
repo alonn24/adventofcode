@@ -50,9 +50,13 @@ ConjunctionState = dict[str, list[Signal]]
 ModulesConnectedTo = dict[str, list[str]]
 
 
-def run_module(modules: Modules, item: Item, state: State, conjunction_state: ConjunctionState, modules_connected_to: ModulesConnectedTo) -> list[Item]:
+def run_module(modules: Modules,
+               item: Item,
+               state: State,
+               conjunction_state: ConjunctionState,
+               modules_connected_to: ModulesConnectedTo) -> list[Item]:
     from_module, current, sig = item
-    if not current in modules:
+    if current not in modules:
         return []
 
     type, nodes = modules[current]
