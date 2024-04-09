@@ -1,16 +1,17 @@
 import numpy as np
 from typing import Any
 
+Point = tuple[int, int]
 
-def is_in_bounds(grid: np.ndarray[Any, Any], pos: tuple[int, int]):
+def is_in_bounds(grid: np.ndarray[Any, Any], pos: Point):
     return 0 <= pos[0] < len(grid) and 0 <= pos[1] < len(grid[0])
 
 
-def add_tuples(a: tuple[int, int], b: tuple[int, int]):
+def add_tuples(a: Point, b: Point):
     return a[0] + b[0], a[1] + b[1]
 
 
-def manhattan_distance(a: tuple[int, int], b: tuple[int, int]):
+def manhattan_distance(a: Point, b: Point):
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
 
