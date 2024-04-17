@@ -47,39 +47,53 @@ def part1(case: str):
     return result
 
 
+def build_graph(grid: np.ndarray[int, Any], start: Point, end: Point) -> dict[Point, dict[Point, int]]:
+    """
+    Build a weighted graph from the grid
+    """
+
+    # Weighted graph
+    g: dict[Point, dict[Point, int]] = {start: {}}
+
+    # q of list of paths
+    q: list[list[Point]] = [[start]]
+    while q:
+        path = q.pop()
+        parent = path[0]
+        pos = path[-1]
+
+        # Add the end to the graph
+        if pos == end:
+            g[parent] = {} if parent not in g else g[parent]
+            g[parent].update({pos: len(path) - 1})
+            continue
+
+        neighbors = get_next_positions(grid, pos)
+
+        # pos is a split. connect it the parent
+        is_split = len(neighbors) > 2 and len(path) > 1
+        if is_split:
+            g[parent] = {} if parent not in g else g[parent]
+            g[parent].update({pos: len(path) - 1})
+            if pos not in g:
+                q.append([pos])
+        else:
+            q += [(path + [x]) for x in neighbors if x not in path]
+    return g
+
+
 def part2(case: str):
+    print('')
     """
     Part 2 - now ignoring the slopes will have to be more efficient
     """
     grid = parse_grid(case)
-
     # Ignore slopes
     grid[np.where((grid == '>') | (grid == '<') | (grid == '^') | (grid == 'v'))] = PATH
 
     start: Point = (0, np.where(grid[0] == PATH)[0][0])
     end: Point = (len(grid) - 1, np.where(grid[-1] == PATH)[0][0])
 
-    q = [[start]]
-    result = 0
-    while q:
-        print(result, len(q))
-        path = q.pop(0)
-        # pos = path[-1]
+    g = build_graph(grid, start, end)
 
-        # Filter not in path
-        next_positions = [x for x in get_next_positions(grid, path[-1]) if x not in path]
-        # Go over hallways
-        while len(next_positions) == 1:
-            path.append(next_positions[0])
-            pos = next_positions[0]
-            next_positions = [x for x in get_next_positions(grid, pos) if x not in path]
-
-        # Got to the end
-        if path[-1] == end:
-            result = max(result, len(path) - 1)
-
-        if len(next_positions) == 0:
-            continue
-        q += [path + [x] for x in next_positions]
-
-    return result
+    return 4
