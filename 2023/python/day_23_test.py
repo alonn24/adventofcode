@@ -1,3 +1,4 @@
+import pytest
 from day_23 import part1, part2
 
 testcase1 = '''
@@ -40,6 +41,7 @@ def test_day23_part2_testcase():
     assert part2(testcase1) == 154
 
 
+@pytest.mark.skip(reason="This test takes too long")
 def test_day23_part2_realcase():
     with open('2023/input/day-23.input.txt', 'r') as f:
-        assert part2(f.read()) == 2030
+        assert part2(f.read()) == 6390

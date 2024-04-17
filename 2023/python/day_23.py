@@ -96,4 +96,16 @@ def part2(case: str):
 
     g = build_graph(grid, start, end)
 
-    return 4
+    q: list[tuple[list[Point], int]] = [([start], 0)]
+    result = 0
+    while q:
+        path, steps = q.pop()
+        pos = path[-1]
+
+        if pos == end:
+            result = max(result, steps)
+            continue
+        next_positions = [k for k in g[pos] if k not in path]
+        q += [(path + [x], steps + g[pos][x]) for x in next_positions]
+
+    return result

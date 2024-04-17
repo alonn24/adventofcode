@@ -3,6 +3,7 @@ from typing import Any
 
 Point = tuple[int, int]
 
+
 def is_in_bounds(grid: np.ndarray[Any, Any], pos: Point):
     return 0 <= pos[0] < len(grid) and 0 <= pos[1] < len(grid[0])
 
