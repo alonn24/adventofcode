@@ -5,7 +5,7 @@ import re
 
 def part1(case: str, min: int, max: int):
     """
-                Day 24: Never Tell Me The Odds
+    Day 24: Never Tell Me The Odds
     Part 1 - count intersections within a tested area
     """
     hailstones = np.array(re.findall(r'-?\d+', case), dtype=np.int64).reshape(-1, 6)

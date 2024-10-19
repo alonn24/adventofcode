@@ -24,12 +24,16 @@
 day-xx
 ```
 
-### python
-Run pytest to run all the tests, or choose a file to run the tests for a specific day
+### Python
+Make sure you are running python version 3.11 or higher.
+Run `pytest` to run all the tests, choose a file to run the tests for a specific day or choose a test case.
 ```
-> pytest
-> pytest day-xx.py
+>
+> python -m pytest
+> python -m pytest -k test_day17_part1_realcase
+> python -m day-xx.py
 ```
+
 To generate a requirements.txt file, run the following command
 ```
 > pip install pipreqs
