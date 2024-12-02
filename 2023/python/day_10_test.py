@@ -14,7 +14,7 @@ LJ.LJ
 
 
 def test_day10_part1_real_case():
-    assert part1(open("2023/input/day-10.input.txt").read()) == 6773
+    assert part1(open("input/day-10.input.txt").read()) == 6773
 
 
 case1 = """
@@ -86,4 +86,4 @@ def test_day10_part2_test_cases(case: str, expected: int):
 
 
 def test_day10_part2_real_case():
-    assert part2(open("2023/input/day-10.input.txt").read()) == 493
+    assert part2(open("input/day-10.input.txt").read()) == 493

@@ -24,7 +24,7 @@ def opposite_direction(direction):
     return directions[(directions.index(direction) + 2) % 4]
 
 
-input = open('2022/input/day-22.input.txt').read()
+input = open('input/day-22.input.txt').read()
 [str_board, str_instructions] = input.split('\n\n')
 max_row = max([len(x) for x in str_board.splitlines()])
 board = [row.ljust(max_row, VOID) for row in str_board.splitlines()]

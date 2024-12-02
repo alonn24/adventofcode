@@ -94,7 +94,7 @@ def part2(case: str):
 
 def play():
     fig, ax = plt.subplots()
-    matrix = np.array([list(row) for row in open('2023/input/day-14.test.txt', 'r').read().splitlines() if row])
+    matrix = np.array([list(row) for row in open('input/day-14.test.txt', 'r').read().splitlines() if row])
 
     def draw_grid():
         ax.clear()

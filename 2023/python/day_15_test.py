@@ -6,7 +6,7 @@ def test_day15_part1_test_case():
 
 
 def test_day15_part1_real_case():
-    with open('2023/input/day-15.input.txt', 'r') as file:
+    with open('input/day-15.input.txt', 'r') as file:
         data = file.read()
         assert part1(data) == 508498
 
@@ -16,6 +16,6 @@ def test_day15_part2_test_case():
 
 
 def test_day15_part2_real_case():
-    with open('2023/input/day-15.input.txt', 'r') as file:
+    with open('input/day-15.input.txt', 'r') as file:
         data = file.read()
         assert part2(data) == 279116

@@ -4,12 +4,12 @@ from day_5 import part1, part2, map_ranges
 
 
 def test_part_1_test_case():
-    input = open('2023/input/day-5.test.txt').read()
+    input = open('input/day-5.test.txt').read()
     assert part1(input) == 35
 
 
 def test_part_1_real_case():
-    input = open('2023/input/day-5.input.txt').read()
+    input = open('input/day-5.input.txt').read()
     assert part1(input) == 662197086
 
 
@@ -34,11 +34,11 @@ def test_map_ranges(start, end, ranges, expected):
 
 
 def test_part_2_test_case():
-    input = open('2023/input/day-5.test.txt').read()
+    input = open('input/day-5.test.txt').read()
     assert part2(input) == 46
 
 
 @pytest.mark.skip(reason="This test takes too long")
 def test_part_2_real_case():
-    input = open('2023/input/day-5.input.txt').read()
+    input = open('input/day-5.input.txt').read()
     assert part2(input) == 52510809

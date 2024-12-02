@@ -22,5 +22,5 @@ def test_day25_part1_testcase():
 
 
 def test_day25_part1_realcase():
-    with open('2023/input/day-25.input.txt') as f:
+    with open('input/day-25.input.txt') as f:
         assert part1(f.read()) == 600225

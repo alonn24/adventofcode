@@ -1,4 +1,4 @@
-input = open('2022/input/day-23.input.txt').read().splitlines()
+input = open('input/day-23.input.txt').read().splitlines()
 
 
 def noop():

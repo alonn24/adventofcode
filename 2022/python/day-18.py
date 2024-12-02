@@ -2,7 +2,7 @@ import itertools
 from collections import namedtuple
 import re
 input = [[*map(int, re.findall(r'\d+', v))]
-         for v in open("2022/input/day-18.input.txt")]
+         for v in open("input/day-18.input.txt")]
 
 
 # all directions we can check from a cube without diagonals

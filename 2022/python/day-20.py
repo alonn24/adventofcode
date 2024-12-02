@@ -1,4 +1,4 @@
-input = [*map(int, open("2022/input/day-20.input.txt").read().splitlines())]
+input = [*map(int, open("input/day-20.input.txt").read().splitlines())]
 
 
 def update_indices(indices, i, current_num_i, next_num_i):

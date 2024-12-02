@@ -12,20 +12,20 @@ def test_day12_get_row_combinations():
 
 
 def test_day12_part1_test_case():
-    with open("2023/input/day-12.test.txt", "r") as file:
+    with open("input/day-12.test.txt", "r") as file:
         assert part1(file.read()) == 21
 
 
 def test_day12_part1_real_case():
-    with open("2023/input/day-12.input.txt", "r") as file:
+    with open("input/day-12.input.txt", "r") as file:
         assert part1(file.read()) == 7674
 
 
 def test_day12_part2_test_case():
-    with open("2023/input/day-12.test.txt", "r") as file:
+    with open("input/day-12.test.txt", "r") as file:
         assert part2(file.read()) == 525152
 
 
 def test_day12_part2_real_case():
-    with open("2023/input/day-12.input.txt", "r") as file:
+    with open("input/day-12.input.txt", "r") as file:
         assert part2(file.read()) == 4443895258186

@@ -30,7 +30,7 @@ ZZZ = (ZZZ, ZZZ)
 
 
 def test_part_1_real_case():
-    assert part1(open('2023/input/day-8.input.txt').read()) == 11911
+    assert part1(open('input/day-8.input.txt').read()) == 11911
 
 
 def test_part_2_test_case_1():
@@ -51,4 +51,4 @@ XXX = (XXX, XXX)
 
 def test_part_2_real_case():
     # 1095800616108638720 too high
-    assert part2(open('2023/input/day-8.input.txt').read()) == 10151663816849
+    assert part2(open('input/day-8.input.txt').read()) == 10151663816849

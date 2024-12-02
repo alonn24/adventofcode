@@ -17,7 +17,7 @@ stones = [
 ]
 
 # 1 for > and -1 for <
-initial_board = [v for v in open("2022/input/day-17.input.txt", "r").read()]
+initial_board = [v for v in open("input/day-17.input.txt", "r").read()]
 
 # helper to print a board
 

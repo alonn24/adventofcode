@@ -1,6 +1,6 @@
 import re
 
-input = open("2022/input/day-15.input.txt", "r").read().strip().split("\n")
+input = open("input/day-15.input.txt", "r").read().strip().split("\n")
 # Map each line to a list of integers
 sensors = list(
     map(lambda x: list(map(lambda r: int(r), re.findall('[-0-9]+', x))), input))

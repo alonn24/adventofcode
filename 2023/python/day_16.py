@@ -127,7 +127,7 @@ def part2(case: str):
 
 def play():
     fig, ax = plt.subplots()
-    matrix = np.array([list(row) for row in open('2023/input/day-16.test.txt', 'r').read().splitlines() if row])
+    matrix = np.array([list(row) for row in open('input/day-16.test.txt', 'r').read().splitlines() if row])
     beam_edges = np.array([[0, 0, 0, 1]])
     beam_positions = beam_edges[:, :2]
 

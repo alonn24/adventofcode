@@ -1,7 +1,7 @@
 FREE = '.'
 WALL = '#'
 
-input = open('2022/input/day-24.input.txt').read().splitlines()
+input = open('input/day-24.input.txt').read().splitlines()
 # We discard the walls
 entry = [(0, y)
          for y, _ in enumerate(input[0]) if input[0][y] == FREE][0]

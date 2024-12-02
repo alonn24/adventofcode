@@ -13,7 +13,7 @@ def test_day24_part1_testcase():
 
 
 def test_day24_part1_realcase():
-    with open('2023/input/day-24.input.txt') as f:
+    with open('input/day-24.input.txt') as f:
         assert part1(f.read(), 200000000000000, 400000000000000) == 13892
 
 
@@ -22,5 +22,5 @@ def test_day24_part2_testcase():
 
 
 def test_day24_part2_realcase():
-    with open('2023/input/day-24.input.txt') as f:
+    with open('input/day-24.input.txt') as f:
         assert part2(f.read()) == 843888100572888

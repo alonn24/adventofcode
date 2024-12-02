@@ -61,7 +61,7 @@ def part2(case: str):
 
 
 def main():
-    case = open('2023/input/day-18.input.txt').read()
+    case = open('input/day-18.input.txt').read()
     instructions: list[Instructions] = [re.findall(re_expression, row)[0] for row in case.splitlines()]
     path: list[Pos] = [(0, 0)]
     for inst in instructions:

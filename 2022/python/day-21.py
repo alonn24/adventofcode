@@ -10,7 +10,7 @@ def parse_row(row):
     return id, expression.split(' ')
 
 
-input = [*map(parse_row, open('2022/input/day-21.input.txt').read().splitlines())]
+input = [*map(parse_row, open('input/day-21.input.txt').read().splitlines())]
 
 
 def part_1(monkeys):

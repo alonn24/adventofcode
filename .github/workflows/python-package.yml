@@ -5,7 +5,7 @@ name: Python package
 
 on:
   push:
-    branches: ["main", "2024"]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        domain: ["2023", "2023", "2024"]
+        domain: ["2022", "2023", "2024"]
         python-version: ["3.11"]
 
     steps:

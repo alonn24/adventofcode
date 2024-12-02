@@ -22,10 +22,10 @@ def test_day20_part1_testcase2():
 
 
 def test_day20_part1_realcase():
-    with open('2023/input/day-20.input.txt', 'r') as f:
+    with open('input/day-20.input.txt', 'r') as f:
         assert part1(f.read()) == 763500168
 
 
 def test_day20_part2_realcase():
-    with open('2023/input/day-20.input.txt', 'r') as f:
+    with open('input/day-20.input.txt', 'r') as f:
         assert part2(f.read()) == 207652583562007

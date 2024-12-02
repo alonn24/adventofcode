@@ -2,7 +2,7 @@ import concurrent.futures
 import re
 from dataclasses import dataclass
 from collections import namedtuple
-input = open("2022/input/day-19.input.txt")
+input = open("input/day-19.input.txt")
 
 
 @dataclass
@@ -59,7 +59,7 @@ def extract_values_from_row(row):
     return Blueprint(int(id), ore_cost, clay_cost, obsidian_cost, geo_cost)
 
 
-input = [*map(extract_values_from_row, open("2022/input/day-19.input.txt"))]
+input = [*map(extract_values_from_row, open("input/day-19.input.txt"))]
 
 
 def build_robots(available_resources: Resources, robots: Resources, blueprint: Blueprint):

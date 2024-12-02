@@ -1,4 +1,4 @@
-input = open('2022/input/day-25.input.txt').read().splitlines()
+input = open('input/day-25.input.txt').read().splitlines()
 
 
 def get_entry_value(entry):

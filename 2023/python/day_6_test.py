@@ -13,19 +13,19 @@ def test_beat_record_ways(time, distance, expected):
 
 
 def test_part1_test_case():
-    assert part1(open('2023/input/day-6.test.txt').read().splitlines()) == 288
+    assert part1(open('input/day-6.test.txt').read().splitlines()) == 288
 
 
 def test_part1_real_case():
     assert part1(
-        open('2023/input/day-6.input.txt').read().splitlines()) == 74698
+        open('input/day-6.input.txt').read().splitlines()) == 74698
 
 
 def test_part2_test_case():
     assert part2(
-        open('2023/input/day-6.test.txt').read().splitlines()) == 71503
+        open('input/day-6.test.txt').read().splitlines()) == 71503
 
 
 def test_part2_real_case():
     assert part2(
-        open('2023/input/day-6.input.txt').read().splitlines()) == 27563421
+        open('input/day-6.input.txt').read().splitlines()) == 27563421

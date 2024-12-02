@@ -17,7 +17,7 @@ def test_day22_part1_testcase():
 
 
 def test_day22_part1_realcase():
-    with open('2023/input/day-22.input.txt', 'r') as f:
+    with open('input/day-22.input.txt', 'r') as f:
         data = f.read()
     assert part1(data) == 501
 
@@ -28,6 +28,6 @@ def test_day22_part2_testcase():
 
 @pytest.mark.skip(reason="This test takes too long")
 def test_day22_part2_realcase():
-    with open('2023/input/day-22.input.txt', 'r') as f:
+    with open('input/day-22.input.txt', 'r') as f:
         data = f.read()
     assert part2(data) == 80948

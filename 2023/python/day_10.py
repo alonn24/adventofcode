@@ -99,7 +99,7 @@ def part2(case: str) -> int:
 
 
 if __name__ == "__main__":
-    with open("2023/input/day-10.input.txt", "r") as f:
+    with open("input/day-10.input.txt", "r") as f:
         case = f.read()
     grid = np.array([list(row)
                     for row in case.strip().split("\n")], dtype=np.str_)
