@@ -9,7 +9,7 @@ def test_day3_part1_test_case():
 def test_day3_part1_real_case():
     with open("day_3.input.txt", "r") as f:
         data = f.read()
-        assert part1(data) == 7
+        assert part1(data) == 183788984
 
 
 def test_day3_part2_test_case():
