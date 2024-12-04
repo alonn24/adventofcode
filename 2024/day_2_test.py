@@ -26,7 +26,8 @@ def test_day2_part2_test_case():
 1 3 6 7 9'''
     assert part2(testcase) == 4
 
+
 def test_day2_part2_real_case():
-		with open('day_2.input.txt', 'r') as f:
-				testcase = f.read()
-				assert part2(testcase) == 717
+    with open('day_2.input.txt', 'r') as f:
+        testcase = f.read()
+        assert part2(testcase) == 717
