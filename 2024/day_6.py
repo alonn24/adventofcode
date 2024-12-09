@@ -72,7 +72,10 @@ def part1(testcase: str):
     return np.count_nonzero(grid.grid == VISITED)
 
 
-def lead_to_loop(initial_pos: tuple[int, int], initial_turn: str, grid: Grid, visited_moves: defaultdict[tuple[int, int], set[str]]) -> bool:
+def lead_to_loop(initial_pos: tuple[int, int],
+                 initial_turn: str,
+                 grid: Grid,
+                 visited_moves: defaultdict[tuple[int, int], set[str]]) -> bool:
     pos = initial_pos
     turn = initial_turn
 
