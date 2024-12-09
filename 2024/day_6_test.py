@@ -1,4 +1,4 @@
-from day_6 import part1
+from day_6 import part1, part2
 
 
 def test_day6_part1_test_case():
@@ -19,3 +19,23 @@ def test_day6_part1_real_case():
     with open('day_6.input.txt', 'r') as f:
         data = f.read()
     assert part1(data) == 4883
+
+
+def test_day6_part2_test_case():
+    testcase = '''....#.....
+.........#
+..........
+..#.......
+.......#..
+..........
+.#..^.....
+........#.
+#.........
+......#...'''
+    assert part2(testcase) == 6
+
+
+# def test_day6_part2_real_case():
+#     with open('day_6.input.txt', 'r') as f:
+#         data = f.read()
+#     assert part2(data) == 437
