@@ -1,12 +1,15 @@
 import numpy as np
-from typing import NamedTuple, Any
-from collections import defaultdict
+from typing import NamedTuple
 
 
 class Grid:
-    def __init__(self, grid: np.ndarray[str, Any]):
-        self.grid = grid
-        self.limits = [0, grid.shape[0], 0, grid.shape[1]]
+    START_POS = '^'
+    WALL = '#'
+    VISITED = 'X'
+
+    def __init__(self, grid: list[list[str]]):
+        self.grid = np.array(grid)
+        self.limits = [0, self.grid.shape[0], 0, self.grid.shape[1]]
 
     def __str__(self):
         return self.grid.__str__()
@@ -20,77 +23,82 @@ class Grid:
     def set_pos_move(self, pos: tuple[int, int], value: str):
         self.grid[pos[0], pos[1]] = value
 
-    def set_pos_visited(self, pos: tuple[int, int]):
-        self.grid[pos[0], pos[1]] = VISITED
+    def is_wall(self, pos: tuple[int, int]) -> bool:
+        return self.grid[pos[0], pos[1]] == self.WALL
+
+    def set_wall(self, pos: tuple[int, int]):
+        self.grid[pos[0], pos[1]] = self.WALL
+
+    # def set_pos_visited(self, pos: tuple[int, int]):
+    #     self.grid[pos[0], pos[1]] = self.VISITED
 
     def get_start_pos(self):
-        return tuple(np.argwhere(self.grid == START_POS)[0].tolist())
+        return (self.START_POS, tuple(np.argwhere(self.grid == self.START_POS)[0].tolist()))
 
 
 class Move(NamedTuple):
     direction: tuple[int, int]
     turn: str
+    current: str
 
     def get_next_pos(self, pos: tuple[int, int]):
         return (pos[0] + self.direction[0], pos[1] + self.direction[1])
 
 
-START_POS = '^'
-WALL = '#'
-VISITED = 'X'
 moves = {
-    '^': Move(direction=(-1, 0), turn='>'),
-    '>': Move(direction=(0, 1), turn='v'),
-    'v': Move(direction=(1, 0), turn='<'),
-    '<': Move(direction=(0, -1), turn='^'),
+    '^': Move(current='^', direction=(-1, 0), turn='>'),
+    '>': Move(current='>', direction=(0, 1), turn='v'),
+    'v': Move(current='v', direction=(1, 0), turn='<'),
+    '<': Move(current='<', direction=(0, -1), turn='^'),
 }
 
 
 def part1(testcase: str):
-    grid = np.array([list(row) for row in testcase.splitlines()])
-    grid = Grid(grid)
+    grid = Grid([list(row) for row in testcase.splitlines()])
 
-    pos = grid.get_start_pos()
+    visited: set[tuple[int, int]] = set()
+    (start_move, pos) = grid.get_start_pos()
+    move = moves[start_move]
+
     while (grid.is_in_bounds(pos)):
-        pos_mov = grid.get_pos_move(pos)
-        move = moves[pos_mov]
+        visited.add(pos)
         next_pos = move.get_next_pos(pos)
 
-        # Out of bounds
         if not grid.is_in_bounds(next_pos):
-            grid.set_pos_visited(pos)
-            pos = next_pos
-        elif grid.get_pos_move(next_pos) == WALL:
-            # Next position is a wall - rotate
-            grid.set_pos_move(pos, move.turn)
+            # game over
+            break
+        elif grid.is_wall(next_pos):
+            # Turn on a wall
+            move = moves[move.turn]
         else:
-            # Next position is free - move
-            grid.set_pos_move(next_pos, pos_mov)
-            grid.set_pos_visited(pos)
+            # Step forward
             pos = next_pos
-    # return all visited positions
-    return np.count_nonzero(grid.grid == VISITED)
+    return len(visited)
 
 
-def lead_to_loop(initial_pos: tuple[int, int],
-                 initial_turn: str,
+def lead_to_loop(pos: tuple[int, int],
+                 move: Move,
                  grid: Grid,
-                 visited_moves: defaultdict[tuple[int, int], set[str]]) -> bool:
-    pos = initial_pos
-    turn = initial_turn
+                 visited: set[tuple[tuple[int, int], str]]) -> bool:
+
+    # clone visited so we can track internal loops
+    internal_visited = set(visited)
 
     # As long as we are in bound and not blocked by a wall
-    while (grid.is_in_bounds(pos)):
-        next_pos = moves[turn].get_next_pos(pos)
-        if turn in visited_moves[pos]:
+    while grid.is_in_bounds(pos):
+        state = (pos, move.current)
+        if state in internal_visited:
             # If already visited this place with the same turn, we are good
             return True
-        elif not grid.is_in_bounds(next_pos):
+        internal_visited.add(state)
+
+        next_pos = move.get_next_pos(pos)
+        if not grid.is_in_bounds(next_pos):
             # Next step is out of bounds
-            return False
-        elif grid.get_pos_move(next_pos) == WALL:
+            break
+        elif grid.is_wall(next_pos):
             # Got to a wall so we need to turn
-            turn = moves[turn].turn
+            move = moves[move.turn]
         else:
             # Step forward
             pos = next_pos
@@ -98,38 +106,50 @@ def lead_to_loop(initial_pos: tuple[int, int],
 
 
 def part2(testcase: str):
-    grid = np.array([list(row) for row in testcase.splitlines()])
-    grid = Grid(grid)
+    grid = Grid([list(row) for row in testcase.splitlines()])
 
-    count = 0
-
+    visited: set[tuple[tuple[int, int], str]] = set()
+    rocks: set[tuple[int, int]] = set()
+    rocks_attempts: set[tuple[int, int]] = set()
     # Move and mark the visited places
-    pos = grid.get_start_pos()
-    visited_moves: defaultdict[tuple[int, int], set[str]] = defaultdict(lambda: set())
-    while (grid.is_in_bounds(pos)):
-        pos_mov = grid.get_pos_move(pos)
-        visited_moves[pos].add(pos_mov)
+    (start_move, start_pos) = grid.get_start_pos()
 
-        move = moves[pos_mov]
+    pos = start_pos
+    move = moves[start_move]
+    while (grid.is_in_bounds(pos)):
         next_pos = move.get_next_pos(pos)
+
+        visited.add((pos, move.current))
 
         # Out of bounds
         if not grid.is_in_bounds(next_pos):
-            grid.set_pos_visited(pos)
-            pos = next_pos
-        elif grid.get_pos_move(next_pos) == WALL:
-            # Next position is a wall - rotate
-            grid.set_pos_move(pos, move.turn)
+            # Game over
+            break
+        elif grid.is_wall(next_pos):
+            # Turn
+            move = moves[move.turn]
         else:
             # Check if we have visited this position with this move
-            # If we do, we can
-            if lead_to_loop(pos, move.turn, grid, visited_moves):
-                count += 1
+            # Edge cases:
+            # 1. We have tried to place a rock here already
+            # 2. Set the wall in the grid before moving on
+            temp = grid.get_pos_move(next_pos)
+            grid.set_wall(next_pos)
+            if (
+                    next_pos not in rocks_attempts and
+                    lead_to_loop(pos, moves[move.turn], grid, visited)):
+                rocks.add(next_pos)
 
-            # Next position is free - move
-            grid.set_pos_move(next_pos, pos_mov)
-            grid.set_pos_visited(pos)
+            # Save all attempts so we dont try putting a rock on a trail
+            rocks_attempts.add(next_pos)
+
+            # Roll back
+            grid.set_pos_move(next_pos, temp)
+
+            # Move forward
             pos = next_pos
 
-    # return all visited positions
-    return count
+    # return all rocks positions
+    if start_pos in rocks:
+        rocks.remove(start_pos)
+    return len(rocks)

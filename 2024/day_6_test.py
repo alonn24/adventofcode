@@ -35,7 +35,9 @@ def test_day6_part2_test_case():
     assert part2(testcase) == 6
 
 
-# def test_day6_part2_real_case():
-#     with open('day_6.input.txt', 'r') as f:
-#         data = f.read()
-#     assert part2(data) == 437
+# 1829 too high
+# Not 1777
+def test_day6_part2_real_case():
+    with open('day_6.input.txt', 'r') as f:
+        data = f.read()
+    assert part2(data) == 1655
