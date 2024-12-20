@@ -29,9 +29,6 @@ class Grid:
     def set_wall(self, pos: tuple[int, int]):
         self.grid[pos[0], pos[1]] = self.WALL
 
-    # def set_pos_visited(self, pos: tuple[int, int]):
-    #     self.grid[pos[0], pos[1]] = self.VISITED
-
     def get_start_pos(self):
         return (self.START_POS, tuple(np.argwhere(self.grid == self.START_POS)[0].tolist()))
 
