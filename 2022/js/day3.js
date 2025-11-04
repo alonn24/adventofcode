@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { chunk } = require('lodash/fp');
-const input = fs.readFileSync('2022/input/day-3.input.txt').toString();
+const input = fs.readFileSync('inputs/2022/day-3.input.txt').toString();
 
 const rucksacks = input.split('\n').map(row => [row.slice(0, row.length/2), row.slice(row.length/2, row.length)])
 const matching = rucksacks.map(rucksack => {

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('2017/input/day-8.input').toString();
+const input = fs.readFileSync('inputs/2017/day-8.input').toString();
 
 const instructions = input.split('\n');
 const equalities = {

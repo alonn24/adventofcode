@@ -25,7 +25,7 @@ object Day13 {
     else findDelay(layers, map, delay+1)
   }
 
-  lazy val input: String = Source.fromFile(s"2017/input/day-13.input").mkString.trim
+  lazy val input: String = Source.fromFile(s"inputs/2017/day-13.input").mkString.trim
    def main(args: Array[String]): Unit = {
     val map = input.lines.foldLeft(Map[Int, Int]()) {
       (map, row) => 

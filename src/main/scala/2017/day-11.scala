@@ -3,7 +3,7 @@ package adventofcode2017
 import scala.io.Source
 
 object Day11 {
-  lazy val input: String = Source.fromFile(s"2017/input/day-11.input").mkString.trim
+  lazy val input: String = Source.fromFile(s"inputs/2017/day-11.input").mkString.trim
 
   val map = Map[String, ((Int, Int, Int, Int)) => ((Int, Int, Int, Int))](
     "n" -> { case ((n, s, e, w)) => ((n+2, s-2, e, w)) },

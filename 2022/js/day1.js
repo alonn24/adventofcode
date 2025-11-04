@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('2022/input/day-1.input.txt').toString();
+const input = fs.readFileSync('inputs/2022/day-1.input.txt').toString();
 
 function sumAll(arr) {
 	return arr.reduce((sum, x) => sum+x, 0);

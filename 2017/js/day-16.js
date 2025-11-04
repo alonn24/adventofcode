@@ -1,5 +1,5 @@
 const fs = require('fs');
-const moves = fs.readFileSync('2017/input/day-16.input').toString();
+const moves = fs.readFileSync('inputs/2017/day-16.input').toString();
 
 const actions = {
   s: (input, a) => {

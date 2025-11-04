@@ -1,5 +1,5 @@
 const fs = require("fs");
-const input = fs.readFileSync("2022/input/day-15.input.txt").toString();
+const input = fs.readFileSync("inputs/2022/day-15.input.txt").toString();
 const sensors = input.split("\n").map((x) => x.match(/[-0-9]+/g).map(Number));
 
 function getTargetIndices(targetY) {
@@ -12,10 +12,10 @@ function getTargetIndices(targetY) {
     // Current row size
     const rowSize = xDisToB * 2 + 1 + yDisToB * 2;
 
-		// Target row size
+    // Target row size
     const tRowSize = rowSize - yDisToT * 2;
 
-		// Add indices to the set of uniq indices
+    // Add indices to the set of uniq indices
     const start = x - (tRowSize - 1) / 2;
     const end = x + (tRowSize - 1) / 2;
     for (let i = start; i <= end; i++) {

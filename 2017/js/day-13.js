@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('2017/input/day-13.input').toString();
+const input = fs.readFileSync('inputs/2017/day-13.input').toString();
 
 const map = input.split('\n').reduce((map, e) => {
   const values = e.split(': ');

@@ -3,7 +3,7 @@ package adventofcode2017
 import scala.io.Source
 
 object Day16 {
-  lazy val moves: String = Source.fromFile(s"2017/input/day-16.input").mkString.trim
+  lazy val moves: String = Source.fromFile(s"inputs/2017/day-16.input").mkString.trim
   val input = "abcdefghijklmnop".toArray
   
   val actions: Map[Char, (Array[Char], String, String) => Array[Char]] = Map[Char, (Array[Char], String, String) => Array[Char]] (

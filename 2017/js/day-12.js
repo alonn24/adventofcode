@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('2017/input/day-12.input').toString();
+const input = fs.readFileSync('inputs/2017/day-12.input').toString();
 
 const villages = input.split('\n');
 const graph = villages.reduce((res, v) => {

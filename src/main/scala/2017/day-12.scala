@@ -3,7 +3,7 @@ package adventofcode2017
 import scala.io.Source
 
 object Day12 {
-  lazy val input: String = Source.fromFile(s"2017/input/day-12.input").mkString.trim
+  lazy val input: String = Source.fromFile(s"inputs/2017/day-12.input").mkString.trim
 
   def findGroup(graph: Map[String, List[String]], vil: String, found: Map[String, Boolean] = Map()): Map[String, Boolean] = {
     graph(vil).foldLeft(found + (vil -> true)) {

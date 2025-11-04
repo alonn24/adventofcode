@@ -1,5 +1,5 @@
 const fs = require("fs");
-const input = fs.readFileSync("2022/input/day-11.input.txt").toString();
+const input = fs.readFileSync("inputs/2022/day-11.input.txt").toString();
 
 const monkeys = input.split("\n\n").map((x) => {
   const [, strItems, strOpr, strTest, strIfTrue, strIfFalse] = x.split("\n");

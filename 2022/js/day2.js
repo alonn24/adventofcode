@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('2022/input/day-2.input.txt').toString();
+const input = fs.readFileSync('inputs/2022/day-2.input.txt').toString();
 
 const [ROCK_SCORE, PAPER_SCORE, SCISSORS_SCORE] = [1,2,3];
 const [ROCK, PAPER, SCISSORS] = ['A', 'B', 'C'];

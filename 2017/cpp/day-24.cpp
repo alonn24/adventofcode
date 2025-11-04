@@ -123,7 +123,7 @@ vector<vector<port>> BridgeBuilder::buildAllBridgesRecursive(vector<port> &bridg
 
 int main()
 {
-	InputReader reader("2017/input/day-24.input");
+	InputReader reader("inputs/2017/day-24.input");
 	vector<port> ports = reader.ports();
 
 	BridgeBuilder bridgeBuilder(ports);

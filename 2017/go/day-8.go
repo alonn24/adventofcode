@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	bytes, _ := ioutil.ReadFile("2017/input/day-8.input")
+	bytes, _ := ioutil.ReadFile("inputs/2017/day-8.input")
 	input := string(bytes)
 	instructions := strings.Split(input, "\n")
 	fmt.Print(instructions)

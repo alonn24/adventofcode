@@ -1,5 +1,5 @@
 const fs = require("fs");
-const input = fs.readFileSync("2022/input/day-14.input.txt").toString();
+const input = fs.readFileSync("inputs/2022/day-14.input.txt").toString();
 
 const paths = input
   .split("\n")

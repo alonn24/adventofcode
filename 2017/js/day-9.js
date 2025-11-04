@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('2017/input/day-9.input').toString();
+const input = fs.readFileSync('inputs/2017/day-9.input').toString();
 
 let count = 0;
 let ignore = false;

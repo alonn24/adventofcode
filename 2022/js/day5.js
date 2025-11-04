@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('2022/input/day-5.input.txt').toString();
+const input = fs.readFileSync('inputs/2022/day-5.input.txt').toString();
 
 const [strCranes, strProcedure] = input.split('\n\n');
 const procedure = strProcedure.split('\n').map(x => x.split(' '));

@@ -4,7 +4,7 @@ import scala.io.Source
 
 object Day8 {
   private val inputRowRegex = """([a-z]+) ([a-z]+) (-?[0-9]+) if ([a-z]+) (.+) (-?[0-9]+)""".r
-  lazy val input: String = Source.fromFile(s"2017/input/day-8.input").mkString.trim
+  lazy val input: String = Source.fromFile(s"inputs/2017/day-8.input").mkString.trim
   val equalities = Map[String, (Int, Int) => Boolean](
     ">" -> (_>_),
     "<" -> (_<_),

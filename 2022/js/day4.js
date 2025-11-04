@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('2022/input/day-4.input.txt').toString();
+const input = fs.readFileSync('inputs/2022/day-4.input.txt').toString();
 
 const pairs = input.split('\n').map(x => x.split(',').map(x => x.split('-').map(Number)));
 const numberOfContainedPairs = pairs.reduce((res, x) => {

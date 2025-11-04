@@ -1,5 +1,5 @@
 const fs = require("fs");
-const input = fs.readFileSync("2022/input/day-7.input.txt").toString();
+const input = fs.readFileSync("inputs/2022/day-7.input.txt").toString();
 
 const [FILE, DIR] = ["file", "dir"];
 function getType(str) {
