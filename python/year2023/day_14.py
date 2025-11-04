@@ -123,7 +123,6 @@ def play():
         plt.gca().invert_yaxis()
 
     def on_key(event):
-        nonlocal matrix
         roll_once(matrix, event.key)
         draw_grid()
         plt.pause(0.1)

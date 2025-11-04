@@ -182,7 +182,6 @@ def play():
         plt.gca().invert_yaxis()
 
     def on_key(event):
-        nonlocal matrix
         nonlocal beam_edges
         nonlocal beam_positions
         beam_edges = play_beams(matrix, beam_edges)
