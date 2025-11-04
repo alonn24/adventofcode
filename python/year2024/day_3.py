@@ -13,7 +13,8 @@ def part1(testcase: str):
 
 def part2(testcase: str):
     # Find all occurrences of mul(X,Y), do(), or don't()
-    instructions = re.findall(r"(mul\((\d+),(\d+)\)|do\(\)|don't\(\))", testcase)
+    instructions = re.findall(
+        r"(mul\((\d+),(\d+)\)|do\(\)|don't\(\))", testcase)
     should_mul = True
     res: list[tuple[int, int]] = []
     for instruction in instructions:

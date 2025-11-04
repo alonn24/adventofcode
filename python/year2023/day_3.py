@@ -54,8 +54,11 @@ def part2(input):
     ixs = [*zip(*(data == '*').nonzero())]
     res = 0
     for i, j in ixs:
-        ixs = [[i + d[0], j + d[1]]
-               for d in d if is_in_bounds(data, i + d[0], j + d[1]) and data[i + d[0], j + d[1]].isdigit()]
+        ixs = [[i + d[0],
+                j + d[1]] for d in d if is_in_bounds(data,
+                                                     i + d[0],
+                                                     j + d[1]) and data[i + d[0],
+                                                                        j + d[1]].isdigit()]
         ns = collection_numbers(data, ixs)
         if (len(ns) > 1):
             res += reduce(lambda acc, n: acc * n, ns.values(), 1)

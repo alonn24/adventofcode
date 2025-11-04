@@ -25,7 +25,8 @@ def part2(case: str):
     Part 2 - organize the lens in boxes
     """
     parts = np.array(case.split(','))
-    lens = np.unique(np.array([part.split('=')[0] for part in parts if '=' in part]))
+    lens = np.unique(np.array([part.split('=')[0]
+                     for part in parts if '=' in part]))
     index_map = {item: index for index, item in enumerate(lens)}
 
     # Box index are the rows and the lens are the columns

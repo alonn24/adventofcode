@@ -16,13 +16,15 @@ def is_line_valid(line: np.ndarray[Any, Any]) -> bool:
 
 
 def part1(testcase: str):
-    lines = [np.array(list(map(int, re.findall(r'\d+', line)))) for line in testcase.splitlines()]
+    lines = [np.array(list(map(int, re.findall(r'\d+', line))))
+             for line in testcase.splitlines()]
     valid_lines = [line for line in lines if is_line_valid(line)]
     return len(valid_lines)
 
 
 def part2(testcase: str):
-    lines = [np.array(list(map(int, re.findall(r'\d+', line)))) for line in testcase.splitlines()]
+    lines = [np.array(list(map(int, re.findall(r'\d+', line))))
+             for line in testcase.splitlines()]
     count = 0
     for line in lines:
         is_ok = False

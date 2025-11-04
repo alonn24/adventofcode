@@ -62,15 +62,21 @@ def extract_values_from_row(row):
 input = [*map(extract_values_from_row, open("inputs/day-19.input.txt"))]
 
 
-def build_robots(available_resources: Resources, robots: Resources, blueprint: Blueprint):
+def build_robots(
+        available_resources: Resources,
+        robots: Resources,
+        blueprint: Blueprint):
     # with the default one of not building a thing
     states = [(available_resources, robots)]
     max_ore_cost = max(blueprint.ore_cost.ore, blueprint.clay_cost.ore,
                        blueprint.obsidian_cost.ore, blueprint.geo_cost.ore)
     max_clay_cost = max(blueprint.ore_cost.clay, blueprint.clay_cost.clay,
                         blueprint.obsidian_cost.clay, blueprint.geo_cost.clay)
-    max_obsidian_cost = max(blueprint.ore_cost.obsidian, blueprint.clay_cost.obsidian,
-                            blueprint.obsidian_cost.obsidian, blueprint.geo_cost.obsidian)
+    max_obsidian_cost = max(
+        blueprint.ore_cost.obsidian,
+        blueprint.clay_cost.obsidian,
+        blueprint.obsidian_cost.obsidian,
+        blueprint.geo_cost.obsidian)
 
     # Add all possible robots build
     # geode - always build
@@ -78,15 +84,18 @@ def build_robots(available_resources: Resources, robots: Resources, blueprint: B
         states.append((available_resources.subtract(
             blueprint.geo_cost), robots.add(Resources(geode=1))))
     # obsidian
-    if available_resources.has(blueprint.obsidian_cost) and robots.obsidian < max_obsidian_cost:
+    if available_resources.has(
+            blueprint.obsidian_cost) and robots.obsidian < max_obsidian_cost:
         states.append((available_resources.subtract(
             blueprint.obsidian_cost), robots.add(Resources(obsidian=1))))
     # clay
-    if available_resources.has(blueprint.clay_cost) and robots.clay < max_clay_cost:
+    if available_resources.has(
+            blueprint.clay_cost) and robots.clay < max_clay_cost:
         states.append((available_resources.subtract(
             blueprint.clay_cost), robots.add(Resources(clay=1))))
     # ore
-    if available_resources.has(blueprint.ore_cost) and robots.ore < max_ore_cost:
+    if available_resources.has(
+            blueprint.ore_cost) and robots.ore < max_ore_cost:
         states.append((available_resources.subtract(
             blueprint.ore_cost), robots.add(Resources(ore=1))))
     return states

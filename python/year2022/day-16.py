@@ -14,12 +14,15 @@ def extract_values_from_row(row):
     return result
 
 
-all_valves = functools.reduce(lambda result, row: result | extract_values_from_row(row),
-                              open("inputs/day-16.input.txt"),
-                              {})
+all_valves = functools.reduce(
+    lambda result,
+    row: result | extract_values_from_row(row),
+    open("inputs/day-16.input.txt"),
+    {})
 valves_names = all_valves.keys()
 
-# build a connection map with every node to every node with the number of hops to get there
+# build a connection map with every node to every node with the number of
+# hops to get there
 connections = collections.defaultdict(lambda: 1000)
 # initialize the first hops
 for k, item in all_valves.items():
@@ -62,7 +65,8 @@ def part2():
         next_valves = [
             v for v in available_valves if connections[current_valve, v] < time_left]
         # here is the magic, is we have an assistant we check if
-        # he handled the available valves from the start, no matter what minute we are at
+        # he handled the available valves from the start, no matter what minute
+        # we are at
         values = [search(26, 'AA', available_valves, False)
                   if assistant else 0]
         for v in next_valves:

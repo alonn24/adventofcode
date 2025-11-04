@@ -70,7 +70,8 @@ def step_to_direction(point, direction, steps):
 
 def get_score(point, direction):
     # sum of 1000 times the row, 4 times the column, and the facing
-    return (1000 * (point[0] + 1)) + (4 * (point[1] + 1)) + directions.index(direction)
+    return (1000 * (point[0] + 1)) + \
+        (4 * (point[1] + 1)) + directions.index(direction)
 
 
 def part_1():

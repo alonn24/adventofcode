@@ -29,7 +29,8 @@ propositions = [
 
 def get_free_space(elves, pos, directions):
     (x, y) = pos
-    return [(x + dx, y + dy) for dx, dy in directions if (x + dx, y + dy) not in elves or not elves[(x + dx, y + dy)]]
+    return [(x + dx, y + dy) for dx, dy in directions if (x + dx,
+                                                          y + dy) not in elves or not elves[(x + dx, y + dy)]]
 
 
 def propose_move(elves, propose_i, position):

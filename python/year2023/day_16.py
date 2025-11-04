@@ -44,7 +44,8 @@ dir_to_sign = {
 }
 
 
-def play_beams(grid: np.ndarray[int, Any], beams: np.ndarray[int, Any]) -> np.ndarray[int, Any]:
+def play_beams(grid: np.ndarray[int, Any],
+               beams: np.ndarray[int, Any]) -> np.ndarray[int, Any]:
     x, y, _, _ = beams.T
     cells = grid[x, y]
 
@@ -53,16 +54,19 @@ def play_beams(grid: np.ndarray[int, Any], beams: np.ndarray[int, Any]) -> np.nd
         beam = beams[i]
         # Get the new beam direction
         new_dirs = light_dir[cell](beam[2], beam[3])
-        # Add the new beams to the next array while stepping to the next position
+        # Add the new beams to the next array while stepping to the next
+        # position
         for new_dir in new_dirs:
-            new_beams = np.append(new_beams, [[beam[0] + new_dir[0], beam[1] + new_dir[1], *new_dir]], axis=0)
+            new_beams = np.append(
+                new_beams, [[beam[0] + new_dir[0], beam[1] + new_dir[1], *new_dir]], axis=0)
     # Filter beams out of the grid
     new_beams = new_beams[(0 <= new_beams[:, 0]) & (new_beams[:, 0] < grid.shape[0]) &
                           (0 <= new_beams[:, 1]) & (new_beams[:, 1] < grid.shape[1])]
     return np.unique(new_beams, axis=0)
 
 
-def get_energized_cells(matrix: np.ndarray[int, Any], entrance_beams: np.ndarray[int, Any]):
+def get_energized_cells(
+        matrix: np.ndarray[int, Any], entrance_beams: np.ndarray[int, Any]):
     """
     This function simulate the beams moving in the grid
     and result with the number of energized cells
@@ -85,7 +89,8 @@ def get_energized_cells(matrix: np.ndarray[int, Any], entrance_beams: np.ndarray
 
         # Filter out beams that are already in the visited beams
         exclude_array = np.array(list(visited_beams))
-        is_in_exclude_array = np.all(beam_edges[:, None, :] == exclude_array[None, :, :], axis=2)
+        is_in_exclude_array = np.all(
+            beam_edges[:, None, :] == exclude_array[None, :, :], axis=2)
         beam_edges = beam_edges[~np.any(is_in_exclude_array, axis=1)]
         if (len(beam_edges) == 0):
             break
@@ -115,19 +120,27 @@ def part2(case: str):
     max_energized_cells = 0
 
     top_row = [(0, i, 1, 0) for i in range(matrix.shape[1])]
-    bottom_row = [(matrix.shape[0] - 1, i, -1, 0) for i in range(matrix.shape[1])]
+    bottom_row = [(matrix.shape[0] - 1, i, -1, 0)
+                  for i in range(matrix.shape[1])]
     left_column = [(i, 0, 0, 1) for i in range(matrix.shape[0])]
-    right_column = [(i, matrix.shape[1] - 1, 0, -1) for i in range(matrix.shape[0])]
+    right_column = [(i, matrix.shape[1] - 1, 0, -1)
+                    for i in range(matrix.shape[0])]
 
     all_entrances = top_row + bottom_row + left_column + right_column
     for entrance in all_entrances:
-        max_energized_cells = max(max_energized_cells, get_energized_cells(matrix, np.array([entrance])))
+        max_energized_cells = max(
+            max_energized_cells,
+            get_energized_cells(
+                matrix,
+                np.array(
+                    [entrance])))
     return max_energized_cells
 
 
 def play():
     fig, ax = plt.subplots()
-    matrix = np.array([list(row) for row in open('input/day-16.test.txt', 'r').read().splitlines() if row])
+    matrix = np.array([list(row) for row in open(
+        'input/day-16.test.txt', 'r').read().splitlines() if row])
     beam_edges = np.array([[0, 0, 0, 1]])
     beam_positions = beam_edges[:, :2]
 
@@ -137,11 +150,27 @@ def play():
         for i in range(len(matrix)):
             for j in range(len(matrix[0])):
                 if matrix[i, j] != ".":
-                    ax.add_patch(Rectangle((j - 0.5, i - 0.5), 1, 1, linewidth=1, edgecolor='black', facecolor='gray'))
-                    plt.text(j, i, matrix[i, j], ha="center", va="center", color="black", fontsize=14)
+                    ax.add_patch(
+                        Rectangle(
+                            (j - 0.5,
+                             i - 0.5),
+                            1,
+                            1,
+                            linewidth=1,
+                            edgecolor='black',
+                            facecolor='gray'))
+                    plt.text(j, i, matrix[i, j], ha="center",
+                             va="center", color="black", fontsize=14)
         for beam in beam_edges:
             sign = dir_to_sign[(beam[2], beam[3])]
-            plt.text(beam[1], beam[0], sign, ha="center", va="center", color="black", fontsize=14)
+            plt.text(
+                beam[1],
+                beam[0],
+                sign,
+                ha="center",
+                va="center",
+                color="black",
+                fontsize=14)
             ax.add_patch(Circle((beam[1], beam[0]), 0.5, color='blue'))
         for beam in beam_positions:
             ax.add_patch(Circle((beam[1], beam[0]), 0.5, color='blue'))
@@ -157,7 +186,8 @@ def play():
         nonlocal beam_edges
         nonlocal beam_positions
         beam_edges = play_beams(matrix, beam_edges)
-        beam_positions = np.unique(np.append(beam_positions, beam_edges[:, :2], axis=0), axis=0)
+        beam_positions = np.unique(
+            np.append(beam_positions, beam_edges[:, :2], axis=0), axis=0)
         draw_grid()
         plt.pause(0.1)
 

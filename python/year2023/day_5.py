@@ -42,7 +42,8 @@ def map_ranges(start, end, ranges):
     for ied in intersected:
         gap = ied[1] - ied[0]
         result.append([max(start, ied[1]) - gap, min(end, ied[2]) - gap])
-        intersection_map[max((ied[1] - start), 0):max((ied[2] - start + 1), 0)] = False
+        intersection_map[max((ied[1] - start), 0)
+                             :max((ied[2] - start + 1), 0)] = False
     # Add not intersected points
     indices = np.where(np.diff(np.concatenate(
         ([False], intersection_map, [False]))) != 0)[0]

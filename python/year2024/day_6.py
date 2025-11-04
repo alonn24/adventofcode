@@ -30,7 +30,10 @@ class Grid:
         self.grid[pos[0], pos[1]] = self.WALL
 
     def get_start_pos(self):
-        return (self.START_POS, tuple(np.argwhere(self.grid == self.START_POS)[0].tolist()))
+        return (
+            self.START_POS, tuple(
+                np.argwhere(
+                    self.grid == self.START_POS)[0].tolist()))
 
 
 class Move(NamedTuple):

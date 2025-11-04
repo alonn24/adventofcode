@@ -17,8 +17,14 @@ def get_sorted_hands(data, order, get_hand_type):
     # Internally sort each hand type and stack back
     for hand_type in range(1, len(HAND_TYPES) + 1):
         hands_of_type = data[hand_types == hand_type]
-        sorted_hands_of_type = sorted(hands_of_type, key=lambda x: (order.index(x[0][0]), order.index(
-            x[0][1]), order.index(x[0][2]), order.index(x[0][3]), order.index(x[0][4])))
+        sorted_hands_of_type = sorted(
+            hands_of_type, key=lambda x: (
+                order.index(
+                    x[0][0]), order.index(
+                    x[0][1]), order.index(
+                    x[0][2]), order.index(
+                        x[0][3]), order.index(
+                            x[0][4])))
         if len(sorted_hands_of_type):
             sorted_hands = np.vstack([sorted_hands, sorted_hands_of_type])
     return sorted_hands

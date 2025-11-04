@@ -11,9 +11,11 @@ def parse_input(testcase: str):
     return rules, lines
 
 
-def is_in_order(line: np.ndarray[int, Any], rules: np.ndarray[int, Any]) -> np.ndarray[int, Any]:
+def is_in_order(line: np.ndarray[int, Any],
+                rules: np.ndarray[int, Any]) -> np.ndarray[int, Any]:
     # Get the indices of the rules
-    index_map = collections.defaultdict(lambda: -1, {x: i for i, x in enumerate(line)})
+    index_map = collections.defaultdict(
+        lambda: -1, {x: i for i, x in enumerate(line)})
     rules_indices = np.vectorize(lambda x: index_map[x])(rules)
     # Filter relevant rules
     rules_indices = rules_indices[np.all(rules_indices > -1, axis=1)]
@@ -44,7 +46,17 @@ def compare(a: int, b: int, rules: np.ndarray[int, Any]) -> int:
 def part2(testcase: str):
     rules, lines = parse_input(testcase)
     # Filter lines that are not in order
-    not_in_order_lines = [line for line in lines if not is_in_order(line, rules)]
-    ordered_lines = [sorted((line), key=cmp_to_key(lambda x, y: compare(x, y, rules))) for line in not_in_order_lines]
+    not_in_order_lines = [
+        line for line in lines if not is_in_order(
+            line, rules)]
+    ordered_lines = [
+        sorted(
+            (line),
+            key=cmp_to_key(
+                lambda x,
+                y: compare(
+                    x,
+                    y,
+                    rules))) for line in not_in_order_lines]
     # Return the sum of the middle elements
     return sum([line[int(len(line) / 2)] for line in ordered_lines])

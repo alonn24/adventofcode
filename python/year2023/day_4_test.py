@@ -3,7 +3,8 @@ from pathlib import Path
 
 
 def test_part1_test_case():
-    assert part1(open(Path('inputs/2023/day-4.test.txt')).read().splitlines()) == 13
+    assert part1(open(Path('inputs/2023/day-4.test.txt')
+                      ).read().splitlines()) == 13
 
 
 def test_part1_real_case():
@@ -12,9 +13,10 @@ def test_part1_real_case():
 
 
 def test_part2_test_case():
-    assert part2(open(Path('inputs/2023/day-4.test.txt')).read().splitlines()) == 30
+    assert part2(open(Path('inputs/2023/day-4.test.txt')
+                      ).read().splitlines()) == 30
 
 
 def test_part2_real_case():
-    assert part2(
-        open(Path('inputs/2023/day-4.input.txt')).read().splitlines()) == 6874754
+    assert part2(open(Path('inputs/2023/day-4.input.txt')
+                      ).read().splitlines()) == 6874754

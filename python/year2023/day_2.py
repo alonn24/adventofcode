@@ -17,7 +17,11 @@ def break_input(row: str):
     return Game(id, blue, red, green)
 
 
-def is_game_possible(game: Game, limit_blue: int, limit_red: int, limit_green: int):
+def is_game_possible(
+        game: Game,
+        limit_blue: int,
+        limit_red: int,
+        limit_green: int):
     return max(game.blue + [0]) <= limit_blue and \
         max(game.red + [0]) <= limit_red and \
         max(game.green + [0]) <= limit_green
@@ -28,10 +32,13 @@ def part1(case: str) -> int:
     LIMIT_RED = 12
     LIMIT_GREEN = 13
     games = [break_input(row) for row in case.splitlines()]
-    possible_games = [game.id for game in games if is_game_possible(game, LIMIT_BLUE, LIMIT_RED, LIMIT_GREEN)]
+    possible_games = [
+        game.id for game in games if is_game_possible(
+            game, LIMIT_BLUE, LIMIT_RED, LIMIT_GREEN)]
     return sum(possible_games)
 
 
 def part2(case: str) -> int:
     games = [break_input(row) for row in case.splitlines()]
-    return sum([max(game.blue) * max(game.red) * max(game.green) for game in games])
+    return sum([max(game.blue) * max(game.red) * max(game.green)
+               for game in games])

@@ -12,16 +12,19 @@ def parse_case(case: str):
     part1, part2 = case.split('\n\n')
 
     def parse_workflow(workflow: str):
-        # Extract the name , rules as string and the result if the rules are not met
+        # Extract the name , rules as string and the result if the rules are
+        # not met
         name, rules, result = re.findall(r'(\w+){(.*),(\w+)}', workflow)[0]
         # Each rule is a tuple of (name, operator, value, result)
-        parsed_rules = np.array(re.findall(r'(\w+)([<>])(\d+):(\w+)', rules)).reshape(-1, 4)
+        parsed_rules = np.array(re.findall(
+            r'(\w+)([<>])(\d+):(\w+)', rules)).reshape(-1, 4)
         return name, parsed_rules, result
 
     workflows = [parse_workflow(w) for w in part1.splitlines()]
     workflows_map: Workflows = {w[0]: (w[1], w[2]) for w in workflows}
 
-    ratings = np.array(re.findall(r'\d+', part2), dtype=np.int64).reshape(-1, 4)
+    ratings = np.array(re.findall(r'\d+', part2),
+                       dtype=np.int64).reshape(-1, 4)
     return workflows_map, ratings
 
 
@@ -38,13 +41,18 @@ def check_rule(rating: np.ndarray[int, Any], rule: Rule) -> bool:
     return val < compare_val if rule[1] == '<' else val > compare_val
 
 
-def check_rating(rating: np.ndarray[int, Any], workflows: Workflows, node: str = START_NODE) -> bool:
+def check_rating(rating: np.ndarray[int,
+                                    Any],
+                 workflows: Workflows,
+                 node: str = START_NODE) -> bool:
     if node == ACCEPT:
         return True
     elif node == REJECT:
         return False
     workflow = workflows[node]
-    maybe_next_node = next((x for x in workflow[0] if check_rule(rating, x)), None)
+    maybe_next_node = next(
+        (x for x in workflow[0] if check_rule(
+            rating, x)), None)
     next_node = maybe_next_node[3] if maybe_next_node is not None else workflow[1]
     return check_rating(rating, workflows, next_node)
 
@@ -74,7 +82,8 @@ def negate_rules(rule: list[Rule]) -> list[Rule]:
 
 def get_combinations(path: list[Rule]) -> int:
     # Inclusive ranges
-    ranges: list[tuple[str, int, int]] = [(x, MIN, MAX) for x in rating_indices]
+    ranges: list[tuple[str, int, int]] = [
+        (x, MIN, MAX) for x in rating_indices]
     for node in path:
         idx = rating_indices.index(node[0])
         equal_addition = 0 if node[1] == '<=' or node[1] == '>=' else 1
@@ -115,9 +124,12 @@ def part2(case: str):
         for i, rule in enumerate(rules):
             # Negate previous rules
             previous_rules = rules[0:i]
-            negated_previous_rules = [x[0:3] for x in negate_rules(list(previous_rules))]
+            negated_previous_rules = [x[0:3]
+                                      for x in negate_rules(list(previous_rules))]
             # Append the rule and continue with the accept node
-            q.append((path + negated_previous_rules + [tuple(rule[0:3])], rule[3]))
+            q.append((path + negated_previous_rules +
+                     [tuple(rule[0:3])], rule[3]))
         # Continue with the else node
-        q.append((path + [x[0:3] for x in negate_rules(list(rules))], workflow[1]))
+        q.append((path + [x[0:3]
+                 for x in negate_rules(list(rules))], workflow[1]))
     return sum([get_combinations(path) for path in win_paths])

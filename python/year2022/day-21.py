@@ -3,7 +3,8 @@ from pathlib import Path
 from sympy import symbols, solve
 from functools import reduce
 
-# Parse each row with id and indication for the type of monkey - fixed or expression
+# Parse each row with id and indication for the type of monkey - fixed or
+# expression
 
 
 def parse_row(row):
@@ -11,7 +12,8 @@ def parse_row(row):
     return id, expression.split(' ')
 
 
-input = [*map(parse_row, open(Path('inputs/2022/day-21.input.txt')).read().splitlines())]
+input = [
+    *map(parse_row, open(Path('inputs/2022/day-21.input.txt')).read().splitlines())]
 
 
 def part_1(monkeys):

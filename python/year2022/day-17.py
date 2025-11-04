@@ -39,7 +39,8 @@ def add_stone(board, stone):
     rows_with_stones = [i for i, row in enumerate(
         board) if not all(v == FREE for v in row)]
     # Add the stone ad cut off the board to only where the stones are
-    return to_add + (board if len(rows_with_stones) == 0 else board[rows_with_stones[0]:])
+    return to_add + (board if len(rows_with_stones) ==
+                     0 else board[rows_with_stones[0]:])
 
 
 def move_horizontally(board, rows_indices_to_move, direction):

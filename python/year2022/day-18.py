@@ -18,7 +18,8 @@ def part_1(input):
     def get_surfaces(cube, cubes_set):
         (x, y, z) = cube
         # Get all free surfaces around the cube
-        return [(x + dx, y + dy, z + dz) for (dx, dy, dz) in check_dir if (x + dx, y + dy, z + dz) not in cubes_set]
+        return [(x + dx, y + dy, z + dz) for (dx, dy, dz)
+                in check_dir if (x + dx, y + dy, z + dz) not in cubes_set]
     # Get all the number of free surfaces
     surfaces = [len(get_surfaces(cube, cubes_set)) for cube in input]
     # Return the total amount

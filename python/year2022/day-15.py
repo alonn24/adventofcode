@@ -16,7 +16,8 @@ def get_row_range_for_sensor(target_y, sensor, from_limit=None, to_limit=None):
     # Current row start and end are the distance to the beacon
     #   and adding each y distance twice, to the left and to the right
     # The target row distance is decreasing the start and end for each y travel
-    # If the target y is out of range, the start and end will exchange sides and wont be counted in the later loop
+    # If the target y is out of range, the start and end will exchange sides
+    # and wont be counted in the later loop
     start_x = x - dis_x - dis_y + dis_y_to_target
     end_x = x + dis_x + dis_y - dis_y_to_target
 
@@ -24,7 +25,10 @@ def get_row_range_for_sensor(target_y, sensor, from_limit=None, to_limit=None):
     if start_x > end_x:
         return None
     if from_limit is not None and to_limit is not None:
-        return [between(start_x, from_limit, to_limit), between(end_x, from_limit, to_limit)]
+        return [
+            between(
+                start_x, from_limit, to_limit), between(
+                end_x, from_limit, to_limit)]
     return [start_x, end_x]
 
 
@@ -55,12 +59,22 @@ print('part 1 - ', len(get_no_beacon_at_part_1(2000000)))
 def between(x, start, end):
     return min(max(x, start), end)
 
-# In order to run faster we skip taken ranges iteratively and not going one by one
+# In order to run faster we skip taken ranges iteratively and not going
+# one by one
 
 
 def get_free_spot_in_row(target_y, search_area):
-    row_range_for_sensor = [*filter(lambda x: x is not None, map(
-        lambda sensor: get_row_range_for_sensor(target_y, sensor, 0, search_area), sensors))]
+    row_range_for_sensor = [
+        *
+        filter(
+            lambda x: x is not None,
+            map(
+                lambda sensor: get_row_range_for_sensor(
+                    target_y,
+                    sensor,
+                    0,
+                    search_area),
+                sensors))]
     # start walking the row from 0 skipping with ranges
     i = 0
     while (i <= search_area):
@@ -68,7 +82,8 @@ def get_free_spot_in_row(target_y, search_area):
         current_range = next(
             (x for x in row_range_for_sensor if x[0] <= i and x[1] >= i), None)
         if current_range is None:
-            # We have found a place without it being taken by a sensor, this is for sure our free spot
+            # We have found a place without it being taken by a sensor, this is
+            # for sure our free spot
             return [i, target_y]
         elif i <= current_range[1]:
             # Skip this range and keep skipping the next one

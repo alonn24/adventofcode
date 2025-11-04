@@ -40,7 +40,8 @@ def part1(case: str):
     Day 18: Lavaduct Lagoon
     Part 1 - digging a lagoon
     """
-    instructions: list[Instructions] = [re.findall(re_expression, row)[0][:2] for row in case.splitlines()]
+    instructions: list[Instructions] = [re.findall(
+        re_expression, row)[0][:2] for row in case.splitlines()]
     return calculate_area(instructions)
 
 
@@ -55,14 +56,18 @@ def part2(case: str):
     """
     Part 2 - digging a lagoon after converting hex to instructions
     """
-    hex_values = [re.findall(re_expression, row)[0][-1] for row in case.splitlines()]
+    hex_values = [re.findall(re_expression, row)[0][-1]
+                  for row in case.splitlines()]
     instructions = [parse_hex(hex_value) for hex_value in hex_values]
     return calculate_area(instructions)
 
 
 def main():
     case = open('input/day-18.input.txt').read()
-    instructions: list[Instructions] = [re.findall(re_expression, row)[0] for row in case.splitlines()]
+    instructions: list[Instructions] = [
+        re.findall(
+            re_expression,
+            row)[0] for row in case.splitlines()]
     path: list[Pos] = [(0, 0)]
     for inst in instructions:
         path.append(move(path[-1], inst))

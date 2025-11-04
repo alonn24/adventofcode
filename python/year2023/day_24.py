@@ -8,7 +8,8 @@ def part1(case: str, min: int, max: int):
     Day 24: Never Tell Me The Odds
     Part 1 - count intersections within a tested area
     """
-    hailstones = np.array(re.findall(r'-?\d+', case), dtype=np.int64).reshape(-1, 6)
+    hailstones = np.array(re.findall(r'-?\d+', case),
+                          dtype=np.int64).reshape(-1, 6)
 
     count = 0
     # For every two stones combination
@@ -43,7 +44,8 @@ def part1(case: str, min: int, max: int):
 
 
 def part2(case: str):
-    hailstones = np.array(re.findall(r'-?\d+', case), dtype=np.int64).reshape(-1, 6)
+    hailstones = np.array(re.findall(r'-?\d+', case),
+                          dtype=np.int64).reshape(-1, 6)
     n = len(hailstones)
 
     pts = hailstones[:, :3].tolist()
@@ -62,7 +64,13 @@ def part2(case: str):
     return sum(rock) / S
 
 
-def find_rock(p1: list[int], v1: list[int], p2: list[int], v2: list[int], p3: list[int], v3: list[int]):
+def find_rock(
+        p1: list[int],
+        v1: list[int],
+        p2: list[int],
+        v2: list[int],
+        p3: list[int],
+        v3: list[int]):
     a, A = find_plane(p1, v1, p2, v2)
     b, B = find_plane(p1, v1, p3, v3)
     c, C = find_plane(p2, v2, p3, v3)

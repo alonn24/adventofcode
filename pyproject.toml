@@ -21,3 +21,15 @@ addopts = "-rsx --durations=0 -s"
 pythonpath = "."
 testpaths = ["python"]
 
+[tool.flake8]
+max-complexity = 10
+max-line-length = 127
+
+[tool.pyright]
+useLibraryCodeForTypes = true
+typeCheckingMode = "strict"
+reportMissingImports = true
+reportMissingTypeStubs = true
+reportMissingModuleSource = true
+strict = true
+

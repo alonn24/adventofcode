@@ -23,11 +23,13 @@ def roll_once(grid: np.ndarray[str, Any], direction: str = 'up'):
             result[1:] = np.where(rolled_stones, ROLLING, result[1:])
             result[:-1] = np.where(rolled_stones, FREE, result[:-1])
         case 'left':
-            rolled_stones = (result[:, 1:] == ROLLING) & (result[:, :-1] == FREE)
+            rolled_stones = (result[:, 1:] == ROLLING) & (
+                result[:, :-1] == FREE)
             result[:, :-1] = np.where(rolled_stones, ROLLING, result[:, :-1])
             result[:, 1:] = np.where(rolled_stones, FREE, result[:, 1:])
         case 'right':
-            rolled_stones = (result[:, :-1] == ROLLING) & (result[:, 1:] == FREE)
+            rolled_stones = (result[:, :-1] ==
+                             ROLLING) & (result[:, 1:] == FREE)
             result[:, 1:] = np.where(rolled_stones, ROLLING, result[:, 1:])
             result[:, :-1] = np.where(rolled_stones, FREE, result[:, :-1])
         case _:
@@ -94,14 +96,23 @@ def part2(case: str):
 
 def play():
     fig, ax = plt.subplots()
-    matrix = np.array([list(row) for row in open('input/day-14.test.txt', 'r').read().splitlines() if row])
+    matrix = np.array([list(row) for row in open(
+        'input/day-14.test.txt', 'r').read().splitlines() if row])
 
     def draw_grid():
         ax.clear()
         for i in range(len(matrix)):
             for j in range(len(matrix[0])):
                 if matrix[i, j] == "#":
-                    ax.add_patch(Rectangle((j - 0.5, i - 0.5), 1, 1, linewidth=1, edgecolor='black', facecolor='gray'))
+                    ax.add_patch(
+                        Rectangle(
+                            (j - 0.5,
+                             i - 0.5),
+                            1,
+                            1,
+                            linewidth=1,
+                            edgecolor='black',
+                            facecolor='gray'))
                 if matrix[i, j] == "O":
                     ax.add_patch(Circle((j, i), 0.5, color='red'))
         ax.set_xticks(np.arange(-0.5, len(matrix[0]), 1), minor=True)

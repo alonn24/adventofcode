@@ -2,7 +2,8 @@ import numpy as np
 from typing import Any
 
 
-def get_points(grid: np.ndarray[Any, Any], expand: int = 2) -> np.ndarray[Any, Any]:
+def get_points(grid: np.ndarray[Any, Any],
+               expand: int = 2) -> np.ndarray[Any, Any]:
     # Get the points indices as tuples
     points = np.transpose(np.where(grid == '#'))
 

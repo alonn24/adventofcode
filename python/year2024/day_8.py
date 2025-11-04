@@ -35,11 +35,14 @@ def part1(testcase: str):
                 loc2 = locations[j]
                 antinode.update(get_antinode(loc1, loc2))
     # Filter only in bounds
-    in_bound_antinode = [loc for loc in antinode if is_in_bounds(grid.shape, loc)]
+    in_bound_antinode = [
+        loc for loc in antinode if is_in_bounds(
+            grid.shape, loc)]
     return len(in_bound_antinode)
 
 
-def get_antinode_on_line(shape: tuple[int, int], pos1: Point, pos2: Point) -> list[Point]:
+def get_antinode_on_line(
+        shape: tuple[int, int], pos1: Point, pos2: Point) -> list[Point]:
     result: set[Point] = set()
     dx = pos2[0] - pos1[0]
     dy = pos2[1] - pos1[1]
@@ -72,5 +75,7 @@ def part2(testcase: str):
                 loc2 = locations[j]
                 antinode.update(get_antinode_on_line(grid.shape, loc1, loc2))
     # Filter only in bounds
-    in_bound_antinode = [loc for loc in antinode if is_in_bounds(grid.shape, loc)]
+    in_bound_antinode = [
+        loc for loc in antinode if is_in_bounds(
+            grid.shape, loc)]
     return len(in_bound_antinode)

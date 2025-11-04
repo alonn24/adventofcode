@@ -34,8 +34,13 @@ def parse_case(case: str) -> tuple[str, Modules]:
     initial = re.findall(r'broadcaster -> (\w+.*)', broadcaster)[0].split(', ')
 
     # Get all modules and their connections
-    modules_grouped: list[list[str]] = [list(re.findall(r'([%|&])(\w*) -> (.*)', x)[0]) for x in modules]
-    modules_dict: Modules = {x[1]: (get_type(x[0]), x[2].split(', ')) for x in modules_grouped}
+    modules_grouped: list[list[str]] = [
+        list(re.findall(r'([%|&])(\w*) -> (.*)', x)[0]) for x in modules]
+    modules_dict: Modules = {
+        x[1]: (
+            get_type(
+                x[0]),
+            x[2].split(', ')) for x in modules_grouped}
 
     return initial, modules_dict
 
@@ -89,7 +94,8 @@ def part1(case: str):
     Push the button 1000 times, count the number of pulse in each round multiplied together.
     """
     initial, modules = parse_case(case)
-    modules_connected_to: ModulesConnectedTo = {k: get_connected_to(k, modules) for k in modules}
+    modules_connected_to: ModulesConnectedTo = {
+        k: get_connected_to(k, modules) for k in modules}
 
     # Conjunctions has internal memory of the signals
     # This is important because we handle signals by order
@@ -119,8 +125,13 @@ def part1(case: str):
             low_count += 1 if sig == LOW else 0
             high_count += 1 if sig == HIGH else 0
 
-            aggregator.extend(run_module(modules, item,
-                                         state, conjunction_state, modules_connected_to))
+            aggregator.extend(
+                run_module(
+                    modules,
+                    item,
+                    state,
+                    conjunction_state,
+                    modules_connected_to))
 
             # Aggregate
             if not q:
@@ -153,7 +164,8 @@ def part2(case: str):
     while True:
         count += 1
         # Q with items (from, to, signal)
-        q: list[tuple[str, str, Signal]] = [(BROADCASTER, x, LOW) for x in initial]
+        q: list[tuple[str, str, Signal]] = [
+            (BROADCASTER, x, LOW) for x in initial]
         aggregator: list[tuple[str, str, Signal]] = []
 
         while q:
@@ -165,8 +177,13 @@ def part2(case: str):
                 return lcm(*cycles)
 
             item = q.pop(0)
-            aggregator.extend(run_module(modules, item,
-                                         state, conjunction_state, modules_connected_to))
+            aggregator.extend(
+                run_module(
+                    modules,
+                    item,
+                    state,
+                    conjunction_state,
+                    modules_connected_to))
 
             # Aggregate
             if not q:

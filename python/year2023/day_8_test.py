@@ -52,4 +52,5 @@ XXX = (XXX, XXX)
 
 def test_part_2_real_case():
     # 1095800616108638720 too high
-    assert part2(open(Path('inputs/2023/day-8.input.txt')).read()) == 10151663816849
+    assert part2(open(Path('inputs/2023/day-8.input.txt')).read()
+                 ) == 10151663816849

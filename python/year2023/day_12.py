@@ -48,11 +48,13 @@ def part1(case: str) -> int:
     Day 12: Hot Springs
     Part 1 - calculate the number of combinations of the pattern
     """
-    return np.sum([get_row_combinations(*prepare_row(row)) for row in case.splitlines()])
+    return np.sum([get_row_combinations(*prepare_row(row))
+                  for row in case.splitlines()])
 
 
 def part2(case: str) -> int:
     """
     Part 2 - calculate the number of combinations when multiply the stripe by 5
     """
-    return np.sum([get_row_combinations(*prepare_row(row, 5)) for row in case.splitlines()])
+    return np.sum([get_row_combinations(*prepare_row(row, 5))
+                  for row in case.splitlines()])

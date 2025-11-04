@@ -23,14 +23,44 @@ def has_bottom_support(bricks: np.ndarray[int, np.dtype[np.int64]],
     bottom_bricks = bricks[(bricks[:, 0, 2] == z) | (bricks[:, 1, 2] == z)]
 
     # Check if we have bricks directly under the current one
-    has_support_x = \
-        ((bottom_bricks[:, 0, 0] >= brick[0, 0]) & (bottom_bricks[:, 0, 0] <= brick[1, 0])) | \
-        ((bottom_bricks[:, 1, 0] >= brick[0, 0]) & (bottom_bricks[:, 1, 0] <= brick[1, 0])) | \
-        ((bottom_bricks[:, 0, 0] <= brick[0, 0]) & (bottom_bricks[:, 1, 0] >= brick[1, 0]))
-    has_support_y = \
-        ((bottom_bricks[:, 0, 1] >= brick[0, 1]) & (bottom_bricks[:, 0, 1] <= brick[1, 1])) | \
-        ((bottom_bricks[:, 1, 1] >= brick[0, 1]) & (bottom_bricks[:, 1, 1] <= brick[1, 1])) | \
-        ((bottom_bricks[:, 0, 1] <= brick[0, 1]) & (bottom_bricks[:, 1, 1] >= brick[1, 1]))
+    has_support_x = ((bottom_bricks[:,
+                                    0,
+                                    0] >= brick[0,
+                                                0]) & (bottom_bricks[:,
+                                                                     0,
+                                                                     0] <= brick[1,
+                                                                                 0])) | ((bottom_bricks[:,
+                                                                                                        1,
+                                                                                                        0] >= brick[0,
+                                                                                                                    0]) & (bottom_bricks[:,
+                                                                                                                                         1,
+                                                                                                                                         0] <= brick[1,
+                                                                                                                                                     0])) | ((bottom_bricks[:,
+                                                                                                                                                                            0,
+                                                                                                                                                                            0] <= brick[0,
+                                                                                                                                                                                        0]) & (bottom_bricks[:,
+                                                                                                                                                                                                             1,
+                                                                                                                                                                                                             0] >= brick[1,
+                                                                                                                                                                                                                         0]))
+    has_support_y = ((bottom_bricks[:,
+                                    0,
+                                    1] >= brick[0,
+                                                1]) & (bottom_bricks[:,
+                                                                     0,
+                                                                     1] <= brick[1,
+                                                                                 1])) | ((bottom_bricks[:,
+                                                                                                        1,
+                                                                                                        1] >= brick[0,
+                                                                                                                    1]) & (bottom_bricks[:,
+                                                                                                                                         1,
+                                                                                                                                         1] <= brick[1,
+                                                                                                                                                     1])) | ((bottom_bricks[:,
+                                                                                                                                                                            0,
+                                                                                                                                                                            1] <= brick[0,
+                                                                                                                                                                                        1]) & (bottom_bricks[:,
+                                                                                                                                                                                                             1,
+                                                                                                                                                                                                             1] >= brick[1,
+                                                                                                                                                                                                                         1]))
     return bool(np.any(has_support_x & has_support_y))
 
 
@@ -61,11 +91,13 @@ def get_bricks_without(bricks: np.ndarray[int, Any], i: int):
     return bricks_without, top_z
 
 
-def filter_out_brick(bricks: np.ndarray[int, Any], brick: np.ndarray[int, Any]):
+def filter_out_brick(
+        bricks: np.ndarray[int, Any], brick: np.ndarray[int, Any]):
     return bricks[np.where(np.any(bricks != brick, axis=(1, 2)))[0]]
 
 
-def get_falling_bricks_without(bricks: np.ndarray[int, Any], brick: np.ndarray[int, Any]) -> np.ndarray[int, Any]:
+def get_falling_bricks_without(
+        bricks: np.ndarray[int, Any], brick: np.ndarray[int, Any]) -> np.ndarray[int, Any]:
     # Filter out the current brick
     bricks_without = filter_out_brick(bricks, brick)
 
@@ -74,8 +106,8 @@ def get_falling_bricks_without(bricks: np.ndarray[int, Any], brick: np.ndarray[i
     bricks_without = bricks_without[
         (bricks_without[:, 1, 2] == top_z) |
         (bricks_without[:, 0, 2] == top_z + 1)]
-    return np.array([bricks for brick in bricks_without if
-                     not has_bottom_support(bricks_without, brick, floor=top_z - 1)])
+    return np.array([bricks for brick in bricks_without if not has_bottom_support(
+        bricks_without, brick, floor=top_z - 1)])
 
 
 def part1(case: str):
@@ -87,7 +119,10 @@ def part1(case: str):
     bricks = bricks[bricks[:, 0, 2].argsort()]
     bricks = push_bricks_down(bricks)
 
-    free_bricks = [brick for brick in bricks if len(get_falling_bricks_without(bricks, brick)) == 0]
+    free_bricks = [
+        brick for brick in bricks if len(
+            get_falling_bricks_without(
+                bricks, brick)) == 0]
     return len(free_bricks)
 
 

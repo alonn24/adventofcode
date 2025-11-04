@@ -14,7 +14,8 @@ def get_next_positions(grid: np.ndarray[int, Any],
     val = grid[pos]
 
     # If slope we have to move in that direction
-    directions = [SLOPES_DIR[SLOPES.index(val)]] if val in SLOPES else SLOPES_DIR
+    directions = [SLOPES_DIR[SLOPES.index(
+        val)]] if val in SLOPES else SLOPES_DIR
     next_positions = [add_tuples(pos, x) for x in directions]
     # Filter inbound, free and not in path
     return [x for x in next_positions if
@@ -42,13 +43,16 @@ def part1(case: str):
             result = max(result, len(path) - 1)
 
         # Filter not in path
-        next_positions = [x for x in get_next_positions(grid, pos) if x not in path]
+        next_positions = [
+            x for x in get_next_positions(
+                grid, pos) if x not in path]
         q += [path + [x] for x in next_positions]
 
     return result
 
 
-def build_graph(grid: np.ndarray[int, Any], start: Point, end: Point) -> dict[Point, dict[Point, int]]:
+def build_graph(grid: np.ndarray[int, Any], start: Point,
+                end: Point) -> dict[Point, dict[Point, int]]:
     """
     Build a weighted graph from the grid
     """
@@ -90,7 +94,8 @@ def part2(case: str):
     """
     grid = parse_grid(case)
     # Ignore slopes
-    grid[np.where((grid == '>') | (grid == '<') | (grid == '^') | (grid == 'v'))] = PATH
+    grid[np.where((grid == '>') | (grid == '<') | (
+        grid == '^') | (grid == 'v'))] = PATH
 
     start: Point = (0, np.where(grid[0] == PATH)[0][0])
     end: Point = (len(grid) - 1, np.where(grid[-1] == PATH)[0][0])

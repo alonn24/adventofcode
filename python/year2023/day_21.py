@@ -8,9 +8,11 @@ ROCK = '#'
 directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
 
-def get_directions(grid: np.ndarray[str, Any], p: tuple[int, int]) -> list[tuple[int, int]]:
+def get_directions(grid: np.ndarray[str, Any],
+                   p: tuple[int, int]) -> list[tuple[int, int]]:
     x, y = p
-    return [(x + dx, y + dy) for dx, dy in directions if grid[(x + dx) % len(grid), (y + dy) % len(grid[0])] == FREE]
+    return [(x + dx, y + dy) for dx, dy in directions if grid[(x + dx) %
+                                                              len(grid), (y + dy) % len(grid[0])] == FREE]
 
 
 def run_steps(start: tuple[int, int], grid: np.ndarray[str, Any], steps: int):
@@ -21,7 +23,8 @@ def run_steps(start: tuple[int, int], grid: np.ndarray[str, Any], steps: int):
     for i in range(steps):
         new_places: set[tuple[int, int]] = set()
         for p in places:
-            new_places.update([x for x in get_directions(grid, p) if x not in visited])
+            new_places.update(
+                [x for x in get_directions(grid, p) if x not in visited])
         places = new_places
 
         # Add current round to visited
@@ -46,7 +49,8 @@ def part1(case: str, steps: int) -> int:
     return len([x for x in visited if visited[x] % 2 == 0])
 
 
-def f(n: int, a: int, b: int, c: int): return a + n * (b - a + (n - 1) * (c - b - b + a) // 2)
+def f(n: int, a: int, b: int, c: int): return a + \
+    n * (b - a + (n - 1) * (c - b - b + a) // 2)
 
 
 def part2(case: str, steps: int) -> int:

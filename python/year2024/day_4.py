@@ -3,11 +3,14 @@ from typing import Any
 
 
 word = ['X', 'M', 'A', 'S']
-all_directions = [(0, 1), (1, 0), (0, -1), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
+all_directions = [(0, 1), (1, 0), (0, -1), (-1, 0),
+                  (1, 1), (1, -1), (-1, 1), (-1, -1)]
 
 
-def check_word(lines: np.ndarray[Any, Any], pos: tuple[int, int], dir: tuple[int, int]):
-    valid = [lines[pos[0] + i * dir[0], pos[1] + i * dir[1]] == word[i] for i in range(1, len(word))]
+def check_word(lines: np.ndarray[Any, Any],
+               pos: tuple[int, int], dir: tuple[int, int]):
+    valid = [lines[pos[0] + i * dir[0], pos[1] + i * dir[1]] == word[i]
+             for i in range(1, len(word))]
     return all(valid)
 
 
@@ -29,7 +32,12 @@ def part1(testcase: str):
     # Start from X and search for MAS in all directions
     start_positions = np.argwhere(lines == 'X')
 
-    xmas = [(pos, dir) for pos in start_positions for dir in all_directions if check_word(lines, pos, dir)]
+    xmas = [
+        (pos,
+         dir) for pos in start_positions for dir in all_directions if check_word(
+            lines,
+            pos,
+            dir)]
     return len(xmas)
 
 

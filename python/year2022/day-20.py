@@ -13,7 +13,8 @@ def update_indices(indices, i, current_num_i, next_num_i):
 
 def mix(numbers, times=1):
     # Array of indices, we will talk though this array to access the numbers by their original order
-    # We need to keep maintain the indices while moving the numbers in the result array
+    # We need to keep maintain the indices while moving the numbers in the
+    # result array
     indices = [i for i in range(len(numbers))]
 
     # The result array as we will not change the original one
@@ -29,7 +30,8 @@ def mix(numbers, times=1):
             elif next_num_i <= 0:
                 next_num_i = next_num_i + len(result) - 1
 
-            # rotate numbers - oddly the pop wont change the array so the insert will work
+            # rotate numbers - oddly the pop wont change the array so the
+            # insert will work
             result.insert(next_num_i, result.pop(current_num_i))
             update_indices(indices, i, current_num_i, next_num_i)
     return result

@@ -22,7 +22,12 @@ def is_in_bounds(grid: NpStrMatrix, x: int, y: int) -> bool:
     return x >= 0 and y >= 0 and x < len(grid) and y < len(grid[0])
 
 
-def is_connected(grid: NpStrMatrix, x1: int, y1: int, x2: int, y2: int) -> bool:
+def is_connected(
+        grid: NpStrMatrix,
+        x1: int,
+        y1: int,
+        x2: int,
+        y2: int) -> bool:
     if not is_in_bounds(grid, x1, y1) or not is_in_bounds(grid, x2, y2):
         return False
     is_n1_connected = any([(x1 + d[0], y1 + d[1])
@@ -35,7 +40,16 @@ def is_connected(grid: NpStrMatrix, x1: int, y1: int, x2: int, y2: int) -> bool:
 def get_connected_pipes(grid: NpStrMatrix, x: int, y: int) -> list[GridNode]:
     near_pipes = [(x + direction[0], y + direction[1])
                   for direction in PIPES[grid[x, y]]]
-    return [*filter(lambda n: is_connected(grid, x, y, n[0], n[1]), near_pipes)]
+    return [
+        *
+        filter(
+            lambda n: is_connected(
+                grid,
+                x,
+                y,
+                n[0],
+                n[1]),
+            near_pipes)]
 
 
 def get_steps_matrix(grid: NpStrMatrix, start: GridNode) -> Any:
@@ -96,7 +110,8 @@ def part2(case: str) -> int:
     pipes_thought = np.cumsum(verticals, axis=1)
     # Get an indication for when we have odd number of vertical pipes
     odd_matrix = pipes_thought % 2 == 1
-    # Ray Casting Algorithm - if the wall numbers are odd, the point is within the loop
+    # Ray Casting Algorithm - if the wall numbers are odd, the point is within
+    # the loop
     return np.count_nonzero(odd_matrix & (steps == 0))
 
 

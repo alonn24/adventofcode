@@ -42,13 +42,15 @@ def find_heat_loss(case: str, min_same_dir: int = 0, max_same_dir: int = 3):
     destination = (len(grid) - 1, len(grid[0]) - 1)
 
     # The key to the visited array is (position, direction, steps_in_same_direction)
-    # Because we are working with priority queue, if we get here again, it must be a longer part
+    # Because we are working with priority queue, if we get here again, it
+    # must be a longer part
     visited: set[EntryKey] = set()
 
     # Create a priority queue so we can always continue from the shortest path
     # We add entries for down and right so we can continue in 2 directions,
     # 	The dir count is 0 so it doesn't count
-    pq: list[tuple[int, EntryKey]] = [(0, (start, DOWN, 0)), (0, (start, RIGHT, 0))]
+    pq: list[tuple[int, EntryKey]] = [
+        (0, (start, DOWN, 0)), (0, (start, RIGHT, 0))]
 
     while pq:
         score, current_pos = heapq.heappop(pq)
@@ -64,14 +66,17 @@ def find_heat_loss(case: str, min_same_dir: int = 0, max_same_dir: int = 3):
         next_pos: list[EntryKey] = []
         # Can turn after min same dir steps
         if dir_steps >= min_same_dir:
-            next_pos: list[EntryKey] = [(add(current, d), d, 1) for d in VERTICALS[dir]]
+            next_pos: list[EntryKey] = [
+                (add(current, d), d, 1) for d in VERTICALS[dir]]
 
         # Can continue in the same direction
         if dir_steps < max_same_dir:
             next_pos.append((add(current, dir), dir, dir_steps + 1))
 
         # Filter visited and position
-        next_pos = [pos for pos in next_pos if is_in_bounds(grid, pos[0]) and pos not in visited]
+        next_pos = [
+            pos for pos in next_pos if is_in_bounds(
+                grid, pos[0]) and pos not in visited]
 
         # Add to the next loop
         for pos in next_pos:
