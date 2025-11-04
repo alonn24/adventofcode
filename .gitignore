@@ -8,3 +8,6 @@ MakeFile
 cmake_install*
 
 __pycache__/
+*.egg-info/
+dist/
+build/
