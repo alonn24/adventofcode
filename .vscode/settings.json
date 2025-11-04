@@ -1,0 +1,43 @@
+{
+  // Python formatting
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  
+  // Python-specific settings
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  
+  // Python formatter configuration
+  "autopep8.args": [
+    "--max-line-length=127",
+    "--aggressive",
+    "--aggressive"
+  ],
+  
+  // Linting
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+    "--max-line-length=127",
+    "--max-complexity=10"
+  ],
+  
+  // Python testing
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": [
+    "python"
+  ],
+  
+  // Files to exclude from explorer
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.egg-info": true
+  }
+}
+

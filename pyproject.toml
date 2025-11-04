@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adventofcode"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "matplotlib==3.8.3",
+    "numpy==1.26.4",
+    "pytest==8.0.0",
+    "sympy==1.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "autopep8>=2.0.0",
+    "flake8>=6.0.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["python*"]
+
+[tool.pytest.ini_options]
+addopts = "-rsx --durations=0 -s"
+pythonpath = "."
+testpaths = ["python"]
+
+[tool.flake8]
+max-complexity = 10
+max-line-length = 127
+
+[tool.pyright]
+useLibraryCodeForTypes = true
+typeCheckingMode = "strict"
+reportMissingImports = true
+reportMissingTypeStubs = true
+reportMissingModuleSource = true
+strict = true
+
