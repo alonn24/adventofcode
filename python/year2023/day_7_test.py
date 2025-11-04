@@ -1,0 +1,23 @@
+from python.year2023.day_7 import part1, part2
+from pathlib import Path
+
+
+def test_part_1_test_case():
+    assert part1(open(Path('inputs/2023/day-7.test.txt')).read().splitlines()) == 6440
+
+
+def test_part_1_real_case():
+    assert part1(
+        open(Path('inputs/2023/day-7.input.txt')).read().splitlines()) == 250347426
+
+
+def test_part_2_test_case():
+    assert part2(open(Path('inputs/2023/day-7.test.txt')).read().splitlines()) == 5905
+
+# 251598109 too high
+# 251181217 too low
+
+
+def test_part_2_real_case():
+    assert part2(
+        open(Path('inputs/2023/day-7.input.txt')).read().splitlines()) == 251224870

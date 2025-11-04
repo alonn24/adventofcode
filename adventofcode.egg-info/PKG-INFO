@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: adventofcode
+Version: 0.1.0
+Requires-Python: >=3.10
+Requires-Dist: matplotlib==3.8.3
+Requires-Dist: numpy==1.26.4
+Requires-Dist: pytest==8.0.0
+Requires-Dist: sympy==1.12
