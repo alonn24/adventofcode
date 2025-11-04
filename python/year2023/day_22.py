@@ -23,44 +23,25 @@ def has_bottom_support(bricks: np.ndarray[int, np.dtype[np.int64]],
     bottom_bricks = bricks[(bricks[:, 0, 2] == z) | (bricks[:, 1, 2] == z)]
 
     # Check if we have bricks directly under the current one
-    has_support_x = ((bottom_bricks[:,
-                                    0,
-                                    0] >= brick[0,
-                                                0]) & (bottom_bricks[:,
-                                                                     0,
-                                                                     0] <= brick[1,
-                                                                                 0])) | ((bottom_bricks[:,
-                                                                                                        1,
-                                                                                                        0] >= brick[0,
-                                                                                                                    0]) & (bottom_bricks[:,
-                                                                                                                                         1,
-                                                                                                                                         0] <= brick[1,
-                                                                                                                                                     0])) | ((bottom_bricks[:,
-                                                                                                                                                                            0,
-                                                                                                                                                                            0] <= brick[0,
-                                                                                                                                                                                        0]) & (bottom_bricks[:,
-                                                                                                                                                                                                             1,
-                                                                                                                                                                                                             0] >= brick[1,
-                                                                                                                                                                                                                         0]))
-    has_support_y = ((bottom_bricks[:,
-                                    0,
-                                    1] >= brick[0,
-                                                1]) & (bottom_bricks[:,
-                                                                     0,
-                                                                     1] <= brick[1,
-                                                                                 1])) | ((bottom_bricks[:,
-                                                                                                        1,
-                                                                                                        1] >= brick[0,
-                                                                                                                    1]) & (bottom_bricks[:,
-                                                                                                                                         1,
-                                                                                                                                         1] <= brick[1,
-                                                                                                                                                     1])) | ((bottom_bricks[:,
-                                                                                                                                                                            0,
-                                                                                                                                                                            1] <= brick[0,
-                                                                                                                                                                                        1]) & (bottom_bricks[:,
-                                                                                                                                                                                                             1,
-                                                                                                                                                                                                             1] >= brick[1,
-                                                                                                                                                                                                                         1]))
+    # X-axis overlap checks
+    bb_x0 = bottom_bricks[:, 0, 0]
+    bb_x1 = bottom_bricks[:, 1, 0]
+    b_x0 = brick[0, 0]
+    b_x1 = brick[1, 0]
+    x_contains_start = (bb_x0 >= b_x0) & (bb_x0 <= b_x1)
+    x_contains_end = (bb_x1 >= b_x0) & (bb_x1 <= b_x1)
+    x_spans = (bb_x0 <= b_x0) & (bb_x1 >= b_x1)
+    has_support_x = x_contains_start | x_contains_end | x_spans
+
+    # Y-axis overlap checks
+    bb_y0 = bottom_bricks[:, 0, 1]
+    bb_y1 = bottom_bricks[:, 1, 1]
+    b_y0 = brick[0, 1]
+    b_y1 = brick[1, 1]
+    y_contains_start = (bb_y0 >= b_y0) & (bb_y0 <= b_y1)
+    y_contains_end = (bb_y1 >= b_y0) & (bb_y1 <= b_y1)
+    y_spans = (bb_y0 <= b_y0) & (bb_y1 >= b_y1)
+    has_support_y = y_contains_start | y_contains_end | y_spans
     return bool(np.any(has_support_x & has_support_y))
 
 

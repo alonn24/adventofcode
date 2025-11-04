@@ -13,6 +13,12 @@ dependencies = [
     "sympy==1.12",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "autopep8>=2.0.0",
+    "flake8>=6.0.0",
+]
+
 [tool.setuptools.packages.find]
 include = ["python*"]
 

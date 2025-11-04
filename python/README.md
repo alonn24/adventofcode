@@ -7,11 +7,17 @@ This directory contains Python solutions for Advent of Code challenges, organize
 ### Installation
 
 1. Install the package in development mode (from repository root):
+
 ```bash
+# Basic installation
 pip install -e .
+
+# With dev tools (autopep8, flake8)
+pip install -e ".[dev]"
 ```
 
 2. Get your puzzle inputs from Advent of Code:
+
    - [2024 Puzzles](https://adventofcode.com/2024) - Save to `inputs/2024/day_X.txt`
    - [2023 Puzzles](https://adventofcode.com/2023) - Save to `inputs/2023/day_X.txt`
    - [2022 Puzzles](https://adventofcode.com/2022) - Save to `inputs/2022/day_X.txt`
@@ -57,6 +63,7 @@ autopep8 --in-place --aggressive --aggressive python/**/*.py
 ```
 
 **Common flake8 checks:**
+
 - **E9**: Syntax errors
 - **F63, F7, F82**: Import and naming errors
 - **E302**: Missing blank lines between functions

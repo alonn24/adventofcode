@@ -48,16 +48,11 @@ def is_possible_equation_with_split(
         memo[key] = False
         return False
     [item, *rest_of_items] = items
-    result = (is_possible_equation_with_split(res,
-                                              rest_of_items,
-                                              accumulator + item,
-                                              memo) or is_possible_equation_with_split(res,
-                                                                                       rest_of_items,
-                                                                                       accumulator * item,
-                                                                                       memo) or is_possible_equation_with_split(res,
-                                                                                                                                rest_of_items,
-                                                                                                                                int(str(accumulator) + str(item)),
-                                                                                                                                memo))
+    result = (
+        is_possible_equation_with_split(res, rest_of_items, accumulator + item, memo)
+        or is_possible_equation_with_split(res, rest_of_items, accumulator * item, memo)
+        or is_possible_equation_with_split(res, rest_of_items, int(str(accumulator) + str(item)), memo)
+    )
     memo[key] = result
     return result
 
